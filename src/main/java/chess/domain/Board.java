@@ -26,6 +26,13 @@ public class Board {
     }
 
     public Spot getSpot(int row, int column){
+        if (row < 0 ||
+            column < 0 ||
+            row > this.spots.length - 1 ||
+            column > this.spots.length - 1)
+        {
+            return null;
+        }
         return this.spots[row][column];
     }
 
