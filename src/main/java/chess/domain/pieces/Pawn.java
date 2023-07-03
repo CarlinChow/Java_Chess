@@ -43,7 +43,7 @@ public class Pawn extends Piece{
             return end.isEmpty();
         }
         // check if attack is legal
-        return !end.isEmpty();
+        return !end.isEmpty() && end.getPiece().isWhite() != this.isWhite();
     }
 
     @Override
