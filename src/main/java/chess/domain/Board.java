@@ -19,13 +19,13 @@ public class Board {
 
     }
 
-    public Spot getSpot(String coordinates){
+    public Spot getSpotAt(String coordinates){
         int row = Math.abs(Character.getNumericValue(coordinates.charAt(1)) - 8);
         int column = coordinates.charAt(0) - 'a';
-        return this.getSpot(row, column);
+        return this.getSpotAt(row, column);
     }
 
-    public Spot getSpot(int row, int column){
+    public Spot getSpotAt(int row, int column){
         if (row < 0 ||
             column < 0 ||
             row > this.spots.length - 1 ||
