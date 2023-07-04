@@ -22,7 +22,7 @@ public class Rook extends Piece {
             int rightEndpoint = Math.max(start.getColumn(), end.getColumn());
             int row = start.getRow();
             for(int j = leftEndpoint; j < rightEndpoint; j++){
-                if(!board.getSpot(row, j).isEmpty()){
+                if(!board.getSpotAt(row, j).isEmpty()){
                     return false;
                 }
             }
@@ -34,7 +34,7 @@ public class Rook extends Piece {
             int bottomEndpoint = Math.max(start.getRow(), end.getRow());
             int column = start.getColumn();
             for(int i = topEndpoint; i < bottomEndpoint; i++){
-                if(!board.getSpot(column, i).isEmpty()){
+                if(!board.getSpotAt(column, i).isEmpty()){
                     return false;
                 }
             }

@@ -33,7 +33,7 @@ public class Pawn extends Piece{
                 diff = -1;
             }
             // check if spots in front are empty
-            Spot spot = board.getSpot(start.getRow() + diff, start.getColumn());
+            Spot spot = board.getSpotAt(start.getRow() + diff, start.getColumn());
             if(spot.isEmpty() && end.isEmpty()){
                 return true;
             }
