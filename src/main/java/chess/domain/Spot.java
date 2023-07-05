@@ -79,7 +79,7 @@ public class Spot {
         }
         if (obj instanceof Spot) {
             Spot spot = (Spot)obj;
-            return this.getRow() == spot.getRow() && this.getColumn() == spot.getColumn() ;
+            return this.getRow() == spot.getRow() && this.getColumn() == spot.getColumn() && this.piece == spot.getPiece();
         }
         return false;
     }
