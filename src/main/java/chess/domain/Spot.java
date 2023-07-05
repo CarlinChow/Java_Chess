@@ -7,7 +7,7 @@ public class Spot {
 
     public Spot(int i, int j){
         this.i = i;
-        this.j= j;
+        this.j = j;
     }
 
     public Spot(int i, int j, Piece piece){
