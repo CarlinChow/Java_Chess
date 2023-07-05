@@ -30,7 +30,7 @@ public class Bishop extends Piece{
                         return false;
                     }
                 }
-                return end.getPiece().isWhite() != this.isWhite();
+                return end.isEmpty() || end.getPiece().isWhite() != this.isWhite();
             }else{
                 // diagonal movement up & right
                 for(int i = startRow - 1, j = startColumn + 1; i > endRow && j < endColumn; i--, j++){
@@ -38,7 +38,7 @@ public class Bishop extends Piece{
                         return false;
                     }
                 }
-                return end.getPiece().isWhite() != this.isWhite();
+                return end.isEmpty() || end.getPiece().isWhite() != this.isWhite();
             }
         }else{
             if(verticalMovement < 0){
@@ -48,7 +48,7 @@ public class Bishop extends Piece{
                         return false;
                     }
                 }
-                return end.getPiece().isWhite() != this.isWhite();
+                return end.isEmpty() || end.getPiece().isWhite() != this.isWhite();
             }else{
                 // diagonal movement up & left
                 for(int i = startRow - 1, j = startColumn - 1; i > endRow && j > endColumn; i--, j--){
@@ -56,7 +56,7 @@ public class Bishop extends Piece{
                         return false;
                     }
                 }
-                return end.getPiece().isWhite() != this.isWhite();
+                return end.isEmpty() || end.getPiece().isWhite() != this.isWhite();
             }
         }
     }
