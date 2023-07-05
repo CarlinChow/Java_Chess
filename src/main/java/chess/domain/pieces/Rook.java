@@ -12,6 +12,7 @@ public class Rook extends Piece {
         super(white);
     }
 
+    @Override
     public boolean canMove(Board board, Spot start, Spot end) {
         int verticalMovement = start.getRow() - end.getRow();
         int horizontalMovement = start.getColumn() - end.getColumn();
@@ -69,6 +70,7 @@ public class Rook extends Piece {
         this.setOnFirstMove(onFirstMove);
     }
 
+    @Override
     public String toString(){
         return "R";
     }
