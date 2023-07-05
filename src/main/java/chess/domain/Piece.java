@@ -1,11 +1,14 @@
 package chess.domain;
+import java.util.UUID;
 public abstract class Piece {
+    private final String id;
     private Spot spot;
-    private boolean white;
+    private final boolean white;
     private boolean captured;
 
     public Piece(boolean white){
         this.white = white;
+        this.id = UUID.randomUUID().toString();
     }
 
     public abstract boolean canMove(Board board, Spot start, Spot end);
@@ -30,6 +33,22 @@ public abstract class Piece {
         return this.spot;
     }
 
+    public String getId(){
+        return this.id;
+    }
+
     @Override
     public abstract String toString();
+
+    @Override
+    public boolean equals(Object obj){
+        if(this == obj){
+            return true;
+        }
+        if(obj instanceof Piece){
+            Piece piece = (Piece)obj;
+            return UUID.fromString(this.id).equals(UUID.fromString(piece.getId()));
+        }
+        return false;
+    }
 }
