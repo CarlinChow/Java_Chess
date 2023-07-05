@@ -12,37 +12,55 @@ public class Rook extends Piece {
         super(white);
     }
 
-    public boolean canMove(Board board, Spot start, Spot end){
+    public boolean canMove(Board board, Spot start, Spot end) {
         int verticalMovement = start.getRow() - end.getRow();
         int horizontalMovement = start.getColumn() - end.getColumn();
-
-        if(verticalMovement == 0){
-            // check for obstacles on path of movement
-            int leftEndpoint = Math.min(start.getColumn(), end.getColumn());
-            int rightEndpoint = Math.max(start.getColumn(), end.getColumn());
-            int row = start.getRow();
-            for(int j = leftEndpoint; j < rightEndpoint; j++){
-                if(!board.getSpotAt(row, j).isEmpty()){
-                    return false;
-                }
-            }
-            return true;
+        if (start.equals(end)) {
+            return false;
         }
-        if(horizontalMovement == 0){
+        if (verticalMovement == 0) {
             // check for obstacles on path of movement
-            int topEndpoint = Math.min(start.getRow(), end.getRow());
-            int bottomEndpoint = Math.max(start.getRow(), end.getRow());
-            int column = start.getColumn();
-            for(int i = topEndpoint; i < bottomEndpoint; i++){
-                if(!board.getSpotAt(column, i).isEmpty()){
-                    return false;
+            int startColumn = start.getColumn();
+            int endColumn = end.getColumn();
+            int row = start.getRow();
+            if (startColumn < endColumn) {
+                for (int j = startColumn + 1; j < endColumn; j++) {
+                    if (!board.getSpotAt(row, j).isEmpty()) {
+                        return false;
+                    }
                 }
+                return end.isEmpty() || end.getPiece().isWhite() != this.isWhite();
+            } else {
+                for (int j = endColumn - 1; j > startColumn; j--) {
+                    if (!board.getSpotAt(row, j).isEmpty()) {
+                        return false;
+                    }
+                }
+                return end.isEmpty() || end.getPiece().isWhite() != this.isWhite();
             }
-            return true;
+        }
+        if (horizontalMovement == 0) {
+            int startRow = start.getRow();
+            int endRow = end.getRow();
+            int column = start.getColumn();
+            if (startRow < endRow) {
+                for (int i = startRow + 1; i < endRow; i++) {
+                    if (!board.getSpotAt(i, column).isEmpty()) {
+                        return false;
+                    }
+                }
+                return end.isEmpty() || end.getPiece().isWhite() != this.isWhite();
+            } else {
+                for (int i = endRow - 1; i > startRow; i--) {
+                    if (!board.getSpotAt(i, column).isEmpty()) {
+                        return false;
+                    }
+                }
+                return end.isEmpty() || end.getPiece().isWhite() != this.isWhite();
+            }
         }
         return false;
     }
-
 
     public boolean getOnFirstMove(){
         return this.onFirstMove;
