@@ -13,6 +13,10 @@ public abstract class Piece {
 
     public abstract boolean canMove(Board board, Spot start, Spot end);
 
+    public boolean canMove(Board board, Spot end){
+        return this.canMove(board, this.spot, end);
+    }
+
     public boolean isWhite(){
         return this.white;
     }

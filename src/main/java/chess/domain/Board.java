@@ -1,7 +1,7 @@
 package chess.domain;
 
 public class Board {
-    private Spot[][] spots;
+    private final Spot[][] spots;
 
     public Board(){
         this.spots = new Spot[8][8];
@@ -19,9 +19,10 @@ public class Board {
 
     }
 
-    public Spot getSpotAt(String coordinates){
-        int row = Math.abs(Character.getNumericValue(coordinates.charAt(1)) - 8);
-        int column = coordinates.charAt(0) - 'a';
+    public Spot getSpotAt(String chessCoordinates){
+        String coordinates = Spot.convertChessCoordinates(chessCoordinates);
+        int row = Character.getNumericValue(coordinates.charAt(1));
+        int column =  Character.getNumericValue(coordinates.charAt(0));
         return this.getSpotAt(row, column);
     }
 
