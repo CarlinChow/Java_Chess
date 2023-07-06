@@ -32,7 +32,7 @@ public class Rook extends Piece {
                 }
                 return end.isEmpty() || end.getPiece().isWhite() != this.isWhite();
             } else {
-                for (int j = endColumn - 1; j > startColumn; j--) {
+                for (int j = startColumn - 1; j > endColumn; j--) {
                     if (!board.getSpotAt(row, j).isEmpty()) {
                         return false;
                     }
@@ -52,7 +52,7 @@ public class Rook extends Piece {
                 }
                 return end.isEmpty() || end.getPiece().isWhite() != this.isWhite();
             } else {
-                for (int i = endRow - 1; i > startRow; i--) {
+                for (int i = startRow - 1; i > endRow; i--) {
                     if (!board.getSpotAt(i, column).isEmpty()) {
                         return false;
                     }

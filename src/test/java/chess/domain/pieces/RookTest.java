@@ -73,6 +73,19 @@ public class RookTest {
         assertFalse(blackRook2.canMove(board, blackRook2.getSpot(), board.getSpotAt(0,0)));
         assertFalse(whiteRook1.canMove(board, whiteRook1.getSpot(), board.getSpotAt(7,7)));
         assertFalse(whiteRook2.canMove(board, whiteRook2.getSpot(), board.getSpotAt(7,0)));
+
+        // movement with interference
+        board.getSpotAt(0,3).setPiece(new Pawn(true));
+        board.getSpotAt(5,0).setPiece(new Pawn(false));
+        board.getSpotAt(7,4).setPiece(new Pawn(false));
+        board.getSpotAt(5,7).setPiece(new Pawn(true));
+        board.printBoard();
+        assertFalse(blackRook1.canMove(board, blackRook1.getSpot(), board.getSpotAt(0,5)));
+        assertFalse(blackRook1.canMove(board, blackRook1.getSpot(), board.getSpotAt(6,0)));
+        assertFalse(blackRook2.canMove(board, blackRook2.getSpot(), board.getSpotAt(6,7)));
+        assertFalse(whiteRook1.canMove(board, whiteRook1.getSpot(), board.getSpotAt(7,6)));
+        assertFalse(whiteRook1.canMove(board, whiteRook1.getSpot(), board.getSpotAt(1,0)));
+        assertFalse(whiteRook2.canMove(board, whiteRook2.getSpot(), board.getSpotAt(1,7)));
     }
 
 }
