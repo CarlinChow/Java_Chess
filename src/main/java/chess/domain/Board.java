@@ -42,7 +42,7 @@ public class Board {
                 if(spots[row][col].isEmpty()){
                     System.out.print("[ ]");
                 }else{
-                    System.out.print("[X]");
+                    System.out.print("["+ spots[row][col].getPiece() +"]");
                 }
             }
             System.out.println(" ");
