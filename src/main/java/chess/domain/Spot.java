@@ -1,17 +1,17 @@
 package chess.domain;
 
 public class Spot {
-    private int i;
-    private int j;
+    private int row;
+    private int column;
     private Piece piece;
 
-    public Spot(int i, int j){
-        this.i = i;
-        this.j = j;
+    public Spot(int row, int column){
+        this.row = row;
+        this.column = column;
     }
 
-    public Spot(int i, int j, Piece piece){
-        this(i, j);
+    public Spot(int row, int column, Piece piece){
+        this(row, column);
         this.piece = piece;
     }
 
@@ -34,42 +34,54 @@ public class Spot {
     }
 
     public int getRow(){
-        return this.i;
+        return this.row;
     }
 
     public int getColumn(){
-        return this.j;
+        return this.column;
     }
 
-    public void setRow(int i){
-        if(i < 0 || i > 7){
+    public void setRow(int row){
+        if(row < 0 || row > 7){
             throw new IllegalArgumentException("row index must be [0,7]");
         }
-        this.i = i;
+        this.row = row;
     }
 
-    public void setColumn(int j){
-        if(j < 0 || j > 7){
+    public void setColumn(int column){
+        if(column < 0 || column > 7){
             throw new IllegalArgumentException("column index must be [0,7]");
         }
-        this.j = j;
+        this.column = column;
     }
 
     public String getChessColumn(){
-        return String.valueOf((char)(this.j + 'a'));
+        return String.valueOf((char)(this.column + 'a'));
     }
 
     public String getChessRow(){
-        return String.valueOf(8 - this.i);
+        return String.valueOf(8 - this.row);
     }
 
     public String getChessCoordinates(){
         return  getChessColumn() + getChessRow();
     }
 
+    public static String getChessCoordinates(int row, int column){
+        String chessColumn = String.valueOf((char)(column + 'a'));
+        String chessRow = String.valueOf(8 - row);
+        return chessColumn + chessRow;
+    }
+
+    public static String convertChessCoordinates(String chessCoordinates){
+        String column = String.valueOf(chessCoordinates.charAt(0) - 'a');
+        String row = String.valueOf(8 - Character.getNumericValue(chessCoordinates.charAt(1)));
+        return row + column;
+    }
+
     @Override
     public String toString(){
-        return "position: " + this.getChessCoordinates() + " on row: " + this.i + " and column: " + this.j;
+        return "position: " + this.getChessCoordinates() + " on row: " + this.row + " and column: " + this.column;
     }
 
     @Override
