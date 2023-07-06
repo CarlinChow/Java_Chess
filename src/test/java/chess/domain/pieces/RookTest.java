@@ -79,7 +79,6 @@ public class RookTest {
         board.getSpotAt(5,0).setPiece(new Pawn(false));
         board.getSpotAt(7,4).setPiece(new Pawn(false));
         board.getSpotAt(5,7).setPiece(new Pawn(true));
-        board.printBoard();
         assertFalse(blackRook1.canMove(board, blackRook1.getSpot(), board.getSpotAt(0,5)));
         assertFalse(blackRook1.canMove(board, blackRook1.getSpot(), board.getSpotAt(6,0)));
         assertFalse(blackRook2.canMove(board, blackRook2.getSpot(), board.getSpotAt(6,7)));

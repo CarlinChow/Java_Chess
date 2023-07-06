@@ -36,17 +36,18 @@ public class Board {
         return this.spots[row][column];
     }
 
-    public void printBoard(){
-        for(int row = 0; row < this.spots.length; row++){
-            for(int col = 0; col < this.spots[0].length; col++){
-                if(spots[row][col].isEmpty()){
+    public void print(){
+        for (Spot[] spot : this.spots) {
+            for (int col = 0; col < this.spots[0].length; col++) {
+                if (spot[col].isEmpty()) {
                     System.out.print("[ ]");
-                }else{
-                    System.out.print("["+ spots[row][col].getPiece() +"]");
+                } else {
+                    System.out.print("[" + spot[col].getPiece() + "]");
                 }
             }
             System.out.println(" ");
         }
+        System.out.println(" ");
     }
 }
 
