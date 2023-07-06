@@ -13,7 +13,7 @@ public class BoardTest {
     @Test
     public void testPrintBoard() {
         Board board = new Board();
-        board.printBoard();
+        board.print();
     }
 
 
