@@ -13,13 +13,9 @@ public class RookTest {
         Piece whiteRook1 = new Rook(true);
         Piece whiteRook2 = new Rook(true);
         board.getSpotAt(0,0).setPiece(blackRook1);
-        blackRook1.setSpot(board.getSpotAt(0,0));
         board.getSpotAt(0,7).setPiece(blackRook2);
-        blackRook2.setSpot(board.getSpotAt(0,7));
         board.getSpotAt(7,0).setPiece(whiteRook1);
-        whiteRook1.setSpot(board.getSpotAt(7,0));
         board.getSpotAt(7,7).setPiece(whiteRook2);
-        whiteRook2.setSpot(board.getSpotAt(7,7));
     }
 
     @Test

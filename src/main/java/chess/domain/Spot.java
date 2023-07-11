@@ -12,7 +12,7 @@ public class Spot {
 
     public Spot(int row, int column, Piece piece){
         this(row, column);
-        this.piece = piece;
+        this.setPiece(piece);
     }
 
     public boolean isEmpty(){
@@ -25,6 +25,7 @@ public class Spot {
 
     public void setPiece(Piece piece){
         this.piece = piece;
+        piece.setSpot(this);
     }
 
     public Piece removePiece(){
