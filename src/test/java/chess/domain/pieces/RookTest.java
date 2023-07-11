@@ -27,26 +27,26 @@ public class RookTest {
         Piece whiteRook1 = board.getSpotAt(7,0).getPiece();
         Piece whiteRook2 = board.getSpotAt(7,7).getPiece();
         for(int i = 1; i < 7; i++){
-            assertTrue(blackRook1.canMove(board, blackRook1.getSpot(), board.getSpotAt(0,i)));
-            assertTrue(blackRook1.canMove(board, blackRook1.getSpot(), board.getSpotAt(i,0)));
+            assertTrue(blackRook1.canMove(board,  board.getSpotAt(0,i)));
+            assertTrue(blackRook1.canMove(board,  board.getSpotAt(i,0)));
         }
         // legal capture move
-        assertTrue(blackRook1.canMove(board, board.getSpotAt(0,0), board.getSpotAt(7,0)));
+        assertTrue(blackRook1.canMove(board, board.getSpotAt(7,0)));
         for(int i = 1; i < 7; i++){
-            assertTrue(blackRook2.canMove(board, blackRook2.getSpot(), board.getSpotAt(0,7 - i)));
-            assertTrue(blackRook2.canMove(board, blackRook2.getSpot(), board.getSpotAt(i,7)));
+            assertTrue(blackRook2.canMove(board, board.getSpotAt(0,7 - i)));
+            assertTrue(blackRook2.canMove(board, board.getSpotAt(i,7)));
         }
-        assertTrue(blackRook2.canMove(board, blackRook2.getSpot(), board.getSpotAt(7,7)));
+        assertTrue(blackRook2.canMove(board, board.getSpotAt(7,7)));
         for(int i = 1; i < 7; i++){
-            assertTrue(whiteRook1.canMove(board, whiteRook1.getSpot(), board.getSpotAt(7,i)));
-            assertTrue(whiteRook1.canMove(board, whiteRook1.getSpot(), board.getSpotAt(7 - i,0)));
+            assertTrue(whiteRook1.canMove(board, board.getSpotAt(7,i)));
+            assertTrue(whiteRook1.canMove(board, board.getSpotAt(7 - i,0)));
         }
-        assertTrue(whiteRook1.canMove(board, whiteRook1.getSpot(), board.getSpotAt(0,0)));
+        assertTrue(whiteRook1.canMove(board, board.getSpotAt(0,0)));
         for(int i = 1; i < 7; i++){
-            assertTrue(whiteRook2.canMove(board, whiteRook2.getSpot(), board.getSpotAt(7,7 - i)));
-            assertTrue(whiteRook2.canMove(board, whiteRook2.getSpot(), board.getSpotAt(7 - i,7)));
+            assertTrue(whiteRook2.canMove(board, board.getSpotAt(7,7 - i)));
+            assertTrue(whiteRook2.canMove(board, board.getSpotAt(7 - i,7)));
         }
-        assertTrue(whiteRook2.canMove(board, whiteRook2.getSpot(), board.getSpotAt(0,7)));
+        assertTrue(whiteRook2.canMove(board, board.getSpotAt(0,7)));
     }
 
     @Test
@@ -59,28 +59,28 @@ public class RookTest {
         Piece whiteRook2 = board.getSpotAt(7,7).getPiece();
 
         // diagonal move
-        assertFalse(blackRook1.canMove(board, board.getSpotAt(0,0), board.getSpotAt(6,6)));
-        assertFalse(blackRook2.canMove(board, board.getSpotAt(0,7), board.getSpotAt(1,6)));
-        assertFalse(whiteRook1.canMove(board, board.getSpotAt(7,0), board.getSpotAt(1,6)));
-        assertFalse(whiteRook2.canMove(board, board.getSpotAt(7,7), board.getSpotAt(1,1)));
+        assertFalse(blackRook1.canMove(board, board.getSpotAt(6,6)));
+        assertFalse(blackRook2.canMove(board, board.getSpotAt(1,6)));
+        assertFalse(whiteRook1.canMove(board, board.getSpotAt(1,6)));
+        assertFalse(whiteRook2.canMove(board, board.getSpotAt(1,1)));
 
         // illegal capture friendly piece
-        assertFalse(blackRook1.canMove(board, blackRook1.getSpot(), board.getSpotAt(0,7)));
-        assertFalse(blackRook2.canMove(board, blackRook2.getSpot(), board.getSpotAt(0,0)));
-        assertFalse(whiteRook1.canMove(board, whiteRook1.getSpot(), board.getSpotAt(7,7)));
-        assertFalse(whiteRook2.canMove(board, whiteRook2.getSpot(), board.getSpotAt(7,0)));
+        assertFalse(blackRook1.canMove(board, board.getSpotAt(0,7)));
+        assertFalse(blackRook2.canMove(board, board.getSpotAt(0,0)));
+        assertFalse(whiteRook1.canMove(board, board.getSpotAt(7,7)));
+        assertFalse(whiteRook2.canMove(board, board.getSpotAt(7,0)));
 
         // movement with interference
         board.getSpotAt(0,3).setPiece(new Pawn(true));
         board.getSpotAt(5,0).setPiece(new Pawn(false));
         board.getSpotAt(7,4).setPiece(new Pawn(false));
         board.getSpotAt(5,7).setPiece(new Pawn(true));
-        assertFalse(blackRook1.canMove(board, blackRook1.getSpot(), board.getSpotAt(0,5)));
-        assertFalse(blackRook1.canMove(board, blackRook1.getSpot(), board.getSpotAt(6,0)));
-        assertFalse(blackRook2.canMove(board, blackRook2.getSpot(), board.getSpotAt(6,7)));
-        assertFalse(whiteRook1.canMove(board, whiteRook1.getSpot(), board.getSpotAt(7,6)));
-        assertFalse(whiteRook1.canMove(board, whiteRook1.getSpot(), board.getSpotAt(1,0)));
-        assertFalse(whiteRook2.canMove(board, whiteRook2.getSpot(), board.getSpotAt(1,7)));
+        assertFalse(blackRook1.canMove(board, board.getSpotAt(0,5)));
+        assertFalse(blackRook1.canMove(board, board.getSpotAt(6,0)));
+        assertFalse(blackRook2.canMove(board, board.getSpotAt(6,7)));
+        assertFalse(whiteRook1.canMove(board, board.getSpotAt(7,6)));
+        assertFalse(whiteRook1.canMove(board, board.getSpotAt(1,0)));
+        assertFalse(whiteRook2.canMove(board, board.getSpotAt(1,7)));
     }
 
 }
