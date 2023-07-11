@@ -7,13 +7,9 @@ import static org.junit.Assert.*;
 public class BishopTest {
     private void setUp(Board board){
         board.getSpotAt(0,2).setPiece(new Bishop(false));
-        board.getSpotAt(0,2).getPiece().setSpot(board.getSpotAt(0,2));
         board.getSpotAt(0,5).setPiece(new Bishop(false));
-        board.getSpotAt(0,5).getPiece().setSpot(board.getSpotAt(0,5));
         board.getSpotAt(7,2).setPiece(new Bishop(true));
-        board.getSpotAt(7,2).getPiece().setSpot(board.getSpotAt(7,2));
         board.getSpotAt(7,5).setPiece(new Bishop(true));
-        board.getSpotAt(7,5).getPiece().setSpot(board.getSpotAt(7,5));
     }
 
     @Test
@@ -73,7 +69,6 @@ public class BishopTest {
         // blackBishop legal capture
         blackBishop1.getSpot().removePiece();
         board.getSpotAt(1,1).setPiece(blackBishop1);
-        blackBishop1.setSpot(board.getSpotAt(1,1));
         board.getSpotAt(7,7).setPiece(new Pawn(true));
         assertTrue(blackBishop1.canMove(board, blackBishop1.getSpot(), board.getSpotAt(0,2)));
         assertTrue(blackBishop1.canMove(board, blackBishop1.getSpot(), board.getSpotAt(7,7)));
@@ -83,7 +78,6 @@ public class BishopTest {
         board.getSpotAt(0,7).setPiece(new Pawn(false));
         whiteBishop1.getSpot().removePiece();
         board.getSpotAt(6,1).setPiece(whiteBishop1);
-        whiteBishop1.setSpot(board.getSpotAt(6,1));
         assertTrue(whiteBishop1.canMove(board, whiteBishop1.getSpot(), board.getSpotAt(7,2)));
         assertTrue(whiteBishop1.canMove(board, whiteBishop1.getSpot(), board.getSpotAt(0,7)));
         assertTrue(whiteBishop1.canMove(board, whiteBishop1.getSpot(), board.getSpotAt(7,0)));

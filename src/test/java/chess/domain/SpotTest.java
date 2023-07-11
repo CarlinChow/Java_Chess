@@ -69,4 +69,15 @@ public class SpotTest {
         assertNotEquals(spot, nonSpotCopy1);
         assertNotEquals(spot, nonSpotCopy2);
     }
+
+    @Test
+    public void testSetPiece(){
+        Piece pawn = new Pawn(true);
+        Spot spot1 = new Spot(2,2, pawn);
+        Piece queen = new Queen(false);
+        Spot spot2 = new Spot(5,0);
+        spot2.setPiece(queen);
+        assertEquals(pawn.getSpot(), spot1);
+        assertEquals(queen.getSpot(), spot2);
+    }
 }
