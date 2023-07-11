@@ -65,7 +65,7 @@ public class Spot {
     }
 
     public String getChessCoordinates(){
-        return  getChessColumn() + getChessRow();
+        return getChessColumn() + getChessRow();
     }
 
     public static String getChessCoordinates(int row, int column){
