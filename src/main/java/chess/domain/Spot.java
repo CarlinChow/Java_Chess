@@ -57,21 +57,27 @@ public class Spot {
     }
 
     public String getChessColumn(){
-        return String.valueOf((char)(this.column + 'a'));
+        return getChessColumn(this.column);
     }
 
     public String getChessRow(){
-        return String.valueOf(8 - this.row);
+        return getChessRow(this.row);
     }
 
     public String getChessCoordinates(){
-        return getChessColumn() + getChessRow();
+        return this.getChessColumn() + this.getChessRow();
+    }
+
+    private static String getChessColumn(int column){
+        return String.valueOf((char)(column + 'a'));
+    }
+
+    private static String getChessRow(int row){
+        return String.valueOf(8 - row);
     }
 
     public static String getChessCoordinates(int row, int column){
-        String chessColumn = String.valueOf((char)(column + 'a'));
-        String chessRow = String.valueOf(8 - row);
-        return chessColumn + chessRow;
+        return getChessColumn(column) + getChessRow(row);
     }
 
     public static String convertChessCoordinates(String chessCoordinates){
