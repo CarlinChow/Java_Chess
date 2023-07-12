@@ -6,14 +6,16 @@ import chess.domain.Spot;
 import java.lang.Math;
 
 public class Rook extends Piece {
-    private boolean onFirstMove;
+    private boolean hasMoved;
 
     public Rook(boolean white){
         super(white);
+        this.hasMoved = false;
     }
 
     @Override
     public boolean canMove(Board board, Spot start, Spot end) {
+        if(start.equals(end)){ return false; }
         int verticalMovement = start.getRow() - end.getRow();
         int horizontalMovement = start.getColumn() - end.getColumn();
         if (start.equals(end)) {
@@ -63,11 +65,11 @@ public class Rook extends Piece {
         return false;
     }
 
-    public boolean getOnFirstMove(){
-        return this.onFirstMove;
+    public boolean getHasMoved(){
+        return this.hasMoved;
     }
-    public void setOnFirstMove(boolean onFirstMove){
-        this.setOnFirstMove(onFirstMove);
+    public void setHasMoved(boolean hasMoved){
+        this.hasMoved = hasMoved;
     }
 
     @Override

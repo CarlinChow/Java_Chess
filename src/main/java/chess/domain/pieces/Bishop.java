@@ -10,9 +10,7 @@ public class Bishop extends Piece{
 
     @Override
     public boolean canMove(Board board, Spot start, Spot end) {
-        if(start.equals(end)){
-            return false;
-        }
+        if(start.equals(end)){ return false; }
         int horizontalMovement = start.getColumn() - end.getColumn();
         int verticalMovement = start.getRow() - end.getRow();
         if(abs(horizontalMovement) != abs(verticalMovement)){
