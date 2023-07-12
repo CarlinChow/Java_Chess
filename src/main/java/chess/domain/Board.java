@@ -20,7 +20,7 @@ public class Board {
     }
 
     public Spot getSpotAt(String chessCoordinates){
-        String coordinates = Spot.convertChessCoordinates(chessCoordinates);
+        String coordinates = Spot.getMatrixCoordinates(chessCoordinates);
         int row = Character.getNumericValue(coordinates.charAt(0));
         int column =  Character.getNumericValue(coordinates.charAt(1));
         return this.getSpotAt(row, column);

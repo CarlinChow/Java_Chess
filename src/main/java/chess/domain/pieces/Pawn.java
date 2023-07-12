@@ -12,6 +12,7 @@ public class Pawn extends Piece{
     }
 
     public boolean canMove(Board board, Spot start, Spot end){
+        if(start.equals(end)){ return false; }
         int verticalMovement = start.getRow() - end.getRow();
         int horizontalMovement = start.getColumn() - end.getColumn();
         if (Math.abs(verticalMovement + horizontalMovement) > 2 ||

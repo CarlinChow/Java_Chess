@@ -80,7 +80,7 @@ public class Spot {
         return getChessColumn(column) + getChessRow(row);
     }
 
-    public static String convertChessCoordinates(String chessCoordinates){
+    public static String getMatrixCoordinates(String chessCoordinates){
         String column = String.valueOf(chessCoordinates.charAt(0) - 'a');
         String row = String.valueOf(8 - Character.getNumericValue(chessCoordinates.charAt(1)));
         return row + column;

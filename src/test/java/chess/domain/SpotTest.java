@@ -2,7 +2,7 @@ package chess.domain;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
-import chess.domain.*;
+
 import chess.domain.pieces.*;
 
 public class SpotTest {
@@ -28,31 +28,31 @@ public class SpotTest {
     public void testGetChessCoordinates(){
         Spot spot = new Spot(0,0);
         assertEquals("a8", spot.getChessCoordinates());
-        assertEquals("00", Spot.convertChessCoordinates(spot.getChessCoordinates()));
+        assertEquals("00", Spot.getMatrixCoordinates(spot.getChessCoordinates()));
         spot = new Spot(7,7);
         assertEquals("h1", spot.getChessCoordinates());
-        assertEquals("77", Spot.convertChessCoordinates(spot.getChessCoordinates()));
+        assertEquals("77", Spot.getMatrixCoordinates(spot.getChessCoordinates()));
         spot = new Spot(3,6);
         assertEquals("g5", spot.getChessCoordinates());
-        assertEquals("36", Spot.convertChessCoordinates(spot.getChessCoordinates()));
+        assertEquals("36", Spot.getMatrixCoordinates(spot.getChessCoordinates()));
         spot = new Spot(2,4);
         assertEquals("e6", spot.getChessCoordinates());
-        assertEquals("24", Spot.convertChessCoordinates(spot.getChessCoordinates()));
+        assertEquals("24", Spot.getMatrixCoordinates(spot.getChessCoordinates()));
         spot = new Spot(1,2);
         assertEquals("c7", spot.getChessCoordinates());
-        assertEquals("12", Spot.convertChessCoordinates(spot.getChessCoordinates()));
+        assertEquals("12", Spot.getMatrixCoordinates(spot.getChessCoordinates()));
         spot = new Spot(1, 5);
         assertEquals("f7", spot.getChessCoordinates());
-        assertEquals("15", Spot.convertChessCoordinates(spot.getChessCoordinates()));
+        assertEquals("15", Spot.getMatrixCoordinates(spot.getChessCoordinates()));
         spot = new Spot(0, 7);
         assertEquals("h8", spot.getChessCoordinates());
-        assertEquals("07", Spot.convertChessCoordinates(spot.getChessCoordinates()));
+        assertEquals("07", Spot.getMatrixCoordinates(spot.getChessCoordinates()));
         spot = new Spot(6, 0);
         assertEquals("a2", spot.getChessCoordinates());
-        assertEquals("60", Spot.convertChessCoordinates(spot.getChessCoordinates()));
+        assertEquals("60", Spot.getMatrixCoordinates(spot.getChessCoordinates()));
         spot = new Spot(5, 1);
         assertEquals("b3", spot.getChessCoordinates());
-        assertEquals("51", Spot.convertChessCoordinates(spot.getChessCoordinates()));
+        assertEquals("51", Spot.getMatrixCoordinates(spot.getChessCoordinates()));
     }
 
     @Test
