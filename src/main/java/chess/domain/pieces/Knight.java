@@ -9,8 +9,8 @@ public class Knight extends Piece{
     }
 
     public boolean canMove(Board board, Spot start, Spot end){
-        int verticalMovement = start.getRow() + end.getRow();
-        int horizontalMovement = start.getColumn() + end.getColumn();
+        int verticalMovement = start.getRow() - end.getRow();
+        int horizontalMovement = start.getColumn() - end.getColumn();
         if(Math.abs(verticalMovement * horizontalMovement) == 2){
             return end.isEmpty() || end.getPiece().isWhite() != this.isWhite();
         }
