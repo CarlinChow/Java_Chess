@@ -96,8 +96,7 @@ public class Spot {
         if (obj == this) {
             return true;
         }
-        if (obj instanceof Spot) {
-            Spot spot = (Spot)obj;
+        if (obj instanceof Spot spot) {
             return this.getRow() == spot.getRow() && this.getColumn() == spot.getColumn() && this.piece == spot.getPiece();
         }
         return false;

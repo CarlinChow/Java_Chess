@@ -1,22 +1,37 @@
 package chess.domain;
 
+import java.lang.reflect.Array;
+import java.util.Collection;
+import java.util.List;
+import java.util.ArrayList;
+
 public class Board {
     private final Spot[][] spots;
+    private List<Piece> pieces;
 
     public Board(){
         this.spots = new Spot[8][8];
-        this.resetBoard();
-    }
-
-    public void resetBoard(){
-        // set up empty spots
         for(int row = 0; row < this.spots.length; row++){
             for(int column = 0; column < this.spots[0].length; column++){
                 this.spots[row][column] = new Spot(row, column);
             }
         }
+        this.pieces = new ArrayList<>();
+
+    }
+
+    public void resetBoard(){
         // set up pieces
 
+    }
+
+    public void clearBoard(){
+        for(Spot[] row : this.spots){
+            for(Spot spot : row){
+                spot.removePiece();
+            }
+        }
+        this.pieces.clear();
     }
 
     public Spot getSpotAt(String chessCoordinates){
@@ -50,5 +65,13 @@ public class Board {
         }
         System.out.println(" ");
     }
+
+    public List<Piece> getAllPieces(){
+        return this.pieces;
+    }
+
+    public void addPiece(Piece piece){ this.pieces.add(piece); }
+
+    public void addAllPieces(Collection<Piece> pieces) { this.pieces.addAll(pieces); }
 }
 

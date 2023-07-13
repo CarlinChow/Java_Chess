@@ -2,6 +2,7 @@ package chess.domain.pieces;
 
 import chess.domain.*;
 import java.lang.Math;
+import java.util.List;
 
 public class King extends Piece{
     private boolean isCastlingDone;
@@ -40,7 +41,7 @@ public class King extends Piece{
     public boolean canCastle(Board board, Spot end){ // end spot must be two spots to the direction of castle
         if(this.isCastlingDone || this.hasMoved){
             return false;
-        }else if(this.isChecked(board, this.getSpot())){ // check if king is currently in check
+        }else if(this.isCurrentlyInCheck(board)){
             return false;
         }
         int verticalMovement = this.getSpot().getRow() - end.getRow();
@@ -59,18 +60,19 @@ public class King extends Piece{
         return false;
     }
 
-    private boolean isChecked(Board board, Spot end){ // check if move puts king in a check
-        for(int i = 0; i < 8; i++){
-            for(int j = 0; j < 8; j++){
-                Spot spot = board.getSpotAt(i,j);
-                if(spot.equals(this.getSpot())){
-                    continue;
-                } else if(!spot.isEmpty() && spot.getPiece().isWhite() != this.isWhite()){
-                    Piece piece = spot.getPiece();
-                    if(piece.canMove(board, this.getSpot())){
-                        return true;
-                    }
-                }
+    public boolean isCurrentlyInCheck(Board board){ // check if current position is in check
+        return this.isChecked(board, this.getSpot());
+    }
+
+    private boolean isChecked(Board board, Spot end){ // check if end spot puts king in check
+        List<Piece> activeOpponentPieces = board
+                .getAllPieces()
+                .stream()
+                .filter(piece -> piece.isWhite() != this.isWhite() && !piece.isCaptured())
+                .toList();
+        for(Piece piece:activeOpponentPieces){
+            if(piece.canMove(board, this.getSpot())){
+                return true;
             }
         }
         return false;
