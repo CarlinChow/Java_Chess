@@ -17,6 +17,8 @@ public abstract class Piece {
         return this.canMove(board, this.spot, end);
     }
 
+    public boolean canMove(Board board, String chessCoordinates){ return this.canMove(board, board.getSpotAt(chessCoordinates)); }
+
     public boolean isWhite(){
         return this.white;
     }
