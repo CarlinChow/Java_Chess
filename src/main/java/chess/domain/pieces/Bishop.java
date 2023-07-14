@@ -59,6 +59,6 @@ public class Bishop extends Piece{
 
     @Override
     public String toString(){
-        return "B";
+        return isWhite() ? "\u2657" : "\u265D";
     }
 }
