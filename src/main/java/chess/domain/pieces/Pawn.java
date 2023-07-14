@@ -57,6 +57,6 @@ public class Pawn extends Piece{
 
     @Override
     public String toString(){
-        return "P";
+        return isWhite() ? "\u2659" : "\u265F";
     }
 }

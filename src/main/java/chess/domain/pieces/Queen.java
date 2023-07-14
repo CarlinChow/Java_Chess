@@ -14,6 +14,6 @@ public class Queen extends Piece{
         return bishop.canMove(board, start, end) || rook.canMove(board, start, end);
     }
     public String toString(){
-        return "Q";
+        return isWhite() ? "\u2655" : "\u265B";
     }
 }

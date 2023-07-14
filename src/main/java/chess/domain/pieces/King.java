@@ -93,6 +93,6 @@ public class King extends Piece{
 
     @Override
     public String toString(){
-        return "KI";
+        return isWhite() ? "\u2654" : "\u265A";
     }
 }

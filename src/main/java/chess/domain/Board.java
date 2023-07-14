@@ -4,6 +4,7 @@ import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
+import chess.domain.pieces.*;
 
 public class Board {
     private final Spot[][] spots;
@@ -17,12 +18,49 @@ public class Board {
             }
         }
         this.pieces = new ArrayList<>();
-
+        this.reset();
     }
 
-    public void reset(){
-        // set up pieces
-
+    public void reset(){ // reset board to piece starting position
+        // black pawns
+        this.getSpotAt("a7").setPiece(new Pawn(false));
+        this.getSpotAt("b7").setPiece(new Pawn(false));
+        this.getSpotAt("c7").setPiece(new Pawn(false));
+        this.getSpotAt("d7").setPiece(new Pawn(false));
+        this.getSpotAt("e7").setPiece(new Pawn(false));
+        this.getSpotAt("f7").setPiece(new Pawn(false));
+        this.getSpotAt("g7").setPiece(new Pawn(false));
+        this.getSpotAt("h7").setPiece(new Pawn(false));
+        // white pawns
+        this.getSpotAt("a2").setPiece(new Pawn(true));
+        this.getSpotAt("b2").setPiece(new Pawn(true));
+        this.getSpotAt("c2").setPiece(new Pawn(true));
+        this.getSpotAt("d2").setPiece(new Pawn(true));
+        this.getSpotAt("e2").setPiece(new Pawn(true));
+        this.getSpotAt("f2").setPiece(new Pawn(true));
+        this.getSpotAt("g2").setPiece(new Pawn(true));
+        this.getSpotAt("h2").setPiece(new Pawn(true));
+        // kings
+        this.getSpotAt("e8").setPiece(new King(false));
+        this.getSpotAt("e1").setPiece(new King(true));
+        // queens
+        this.getSpotAt("d8").setPiece(new Queen(false));
+        this.getSpotAt("d1").setPiece(new Queen(true));
+        // bishops
+        this.getSpotAt("c8").setPiece(new Bishop(false));
+        this.getSpotAt("f8").setPiece(new Bishop(false));
+        this.getSpotAt("c1").setPiece(new Bishop(true));
+        this.getSpotAt("f1").setPiece(new Bishop(true));
+        // knights
+        this.getSpotAt("b8").setPiece(new Knight(false));
+        this.getSpotAt("g8").setPiece(new Knight(false));
+        this.getSpotAt("b1").setPiece(new Knight(true));
+        this.getSpotAt("g1").setPiece(new Knight(true));
+        // rooks
+        this.getSpotAt("a8").setPiece(new Rook(false));
+        this.getSpotAt("h8").setPiece(new Rook(false));
+        this.getSpotAt("a1").setPiece(new Rook(true));
+        this.getSpotAt("h1").setPiece(new Rook(true));
     }
 
     public void clear(){
@@ -53,17 +91,51 @@ public class Board {
     }
 
     public void print(){
-        for (Spot[] spot : this.spots) {
+        System.out.print("  ");
+        for(char alphabet = 'a'; alphabet < 'h' + 1; alphabet++){
+            System.out.print(" " + alphabet + " ");
+        }
+        System.out.println("");
+        for (int row = 0; row < this.spots.length; row++) {
+            System.out.print(spots[row][0].getChessRow() + " ");
             for (int col = 0; col < this.spots[0].length; col++) {
-                if (spot[col].isEmpty()) {
+                if (spots[row][col].isEmpty()) {
                     System.out.print("[ ]");
                 } else {
-                    System.out.print("[" + spot[col].getPiece() + "]");
+                    System.out.print("[" + spots[row][col].getPiece() + "]");
                 }
             }
-            System.out.println(" ");
+            System.out.println(" " + spots[row][0].getChessRow());
         }
-        System.out.println(" ");
+        System.out.print("  ");
+        for(char alphabet = 'a'; alphabet < 'h' + 1; alphabet++){
+            System.out.print(" " + alphabet + " ");
+        }
+        System.out.println("  ");
+    }
+
+    public void printInverse(){
+        System.out.print("  ");
+        for(char alphabet = 'a'; alphabet < 'h' + 1; alphabet++){
+            System.out.print(" " + alphabet + " ");
+        }
+        System.out.println("");
+        for (int row = spots.length - 1; row > -1; row--) {
+            System.out.print(spots[row][0].getChessRow() + " ");
+            for (int col = 0; col < this.spots[0].length; col++) {
+                if (spots[row][col].isEmpty()) {
+                    System.out.print("[ ]");
+                } else {
+                    System.out.print("[" + spots[row][col].getPiece() + "]");
+                }
+            }
+            System.out.println(" " + spots[row][0].getChessRow());
+        }
+        System.out.print("  ");
+        for(char alphabet = 'a'; alphabet < 'h' + 1; alphabet++){
+            System.out.print(" " + alphabet + " ");
+        }
+        System.out.println("  ");
     }
 
     public List<Piece> getAllPieces(){
@@ -75,6 +147,5 @@ public class Board {
     public void removePiece(Piece piece){ this.pieces.remove(piece); }
 
     public void addAllPieces(Collection<Piece> pieces) { this.pieces.addAll(pieces); }
-
 }
 

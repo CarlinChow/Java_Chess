@@ -19,6 +19,6 @@ public class Knight extends Piece{
 
     @Override
     public String toString(){
-        return "K";
+        return isWhite() ? "\u2658" : "\u265E";
     }
 }
