@@ -17,7 +17,17 @@ public abstract class Piece {
         return this.canMove(board, this.spot, end);
     }
 
-    public boolean canMove(Board board, String chessCoordinates){ return this.canMove(board, board.getSpotAt(chessCoordinates)); }
+    public boolean canMove(Board board, String chessCoordinates){
+        return this.canMove(board, board.getSpotAt(chessCoordinates));
+    }
+
+    public boolean canCapture(Board board, Spot end){
+        return this.canMove(board, end);
+    }
+
+    public boolean canCapture(Board board, String chessCoordinates){
+        return this.canCapture(board, board.getSpotAt(chessCoordinates));
+    }
 
     public boolean isWhite(){
         return this.white;
@@ -51,8 +61,7 @@ public abstract class Piece {
         if(this == obj){
             return true;
         }
-        if(obj instanceof Piece){
-            Piece piece = (Piece)obj;
+        if(obj instanceof Piece piece){
             return UUID.fromString(this.id).equals(UUID.fromString(piece.getId()));
         }
         return false;

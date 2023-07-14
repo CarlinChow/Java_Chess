@@ -11,6 +11,7 @@ public class Pawn extends Piece{
         super(white);
     }
 
+    @Override
     public boolean canMove(Board board, Spot start, Spot end){
         if(start.equals(end)){ return false; }
         int verticalMovement = start.getRow() - end.getRow();
@@ -46,8 +47,16 @@ public class Pawn extends Piece{
     }
 
     @Override
+    public boolean canCapture(Board board, Spot end){
+        Spot start = this.getSpot();
+        int verticalMovement = start.getRow() - end.getRow();
+        int horizontalMovement = start.getColumn() - end.getColumn();
+        int direction = this.isWhite() ? 1 : -1;
+        return Math.abs(horizontalMovement) == 1 && verticalMovement == direction;
+    }
+
+    @Override
     public String toString(){
         return "P";
     }
-
 }
