@@ -14,16 +14,6 @@ public class King extends Piece{
         this.hasMoved = false;
     }
 
-    public boolean canMove(Board board, Spot start, Spot end){
-        if(start.equals(end)){ return false; }
-        int verticalMovement = start.getRow() - end.getRow();
-        int horizontalMovement = start.getColumn() - end.getColumn();
-        if(Math.abs(horizontalMovement) < 2 && Math.abs(verticalMovement) < 2){
-            return !this.isChecked(board, end) && (end.isEmpty() || end.getPiece().isWhite() != this.isWhite());
-        }
-        return false;
-    }
-
     public boolean getIsCastlingDone(){
         return this.isCastlingDone;
     }
@@ -38,7 +28,48 @@ public class King extends Piece{
 
     public void setHasMoved(boolean hasMoved){ this.hasMoved = hasMoved; }
 
-    public boolean canCastle(Board board, Spot end){ // end spot must be two spots to the direction of castle
+    public boolean canMove(Board board, Spot start, Spot end){
+        if(start.equals(end)){ return false; }
+        int verticalMovement = start.getRow() - end.getRow();
+        int horizontalMovement = start.getColumn() - end.getColumn();
+        if(Math.abs(horizontalMovement) < 2 && Math.abs(verticalMovement) < 2){
+            return !this.isChecked(board, end) && (end.isEmpty() || end.getPiece().isWhite() != this.isWhite());
+        }
+        return false;
+    }
+
+    public boolean isCurrentlyInCheck(Board board){ // check if current position is in check
+        return this.isChecked(board, this.getSpot());
+    }
+
+    private boolean isChecked(Board board, Spot end){ // check if end spot puts king in check
+        Piece capturedPiece = null;
+        if(!end.isEmpty()){ // special case: king performs a capture move
+            capturedPiece = end.removePiece();
+            capturedPiece.setCaptured(true);
+        }
+        List<Piece> activeOpponentPieces = board
+                .getAllPieces()
+                .stream()
+                .filter(piece -> this.isWhite() != piece.isWhite() && !piece.isCaptured())
+                .toList();
+        for(Piece piece:activeOpponentPieces){
+            if(piece.canCapture(board, end)){
+                if(capturedPiece != null){ // reverting board back to original
+                    capturedPiece.setCaptured(false);
+                    end.setPiece(capturedPiece);
+                }
+                return true;
+            }
+        }
+        if(capturedPiece != null){  // reverting board back to original
+            capturedPiece.setCaptured(false);
+            end.setPiece(capturedPiece);
+        }
+        return false;
+    }
+
+    public boolean canCastle(Board board, Spot end){ // work on later when moveList object is created, movelist can be a parameter
         if(this.isCastlingDone || this.hasMoved){
             return false;
         }else if(this.isCurrentlyInCheck(board)){
@@ -55,24 +86,6 @@ public class King extends Piece{
             }
             if(!rookSpot.isEmpty() && rookSpot.getPiece() instanceof Rook rook){
                 return !rook.getHasMoved();
-            }
-        }
-        return false;
-    }
-
-    public boolean isCurrentlyInCheck(Board board){ // check if current position is in check
-        return this.isChecked(board, this.getSpot());
-    }
-
-    private boolean isChecked(Board board, Spot end){ // check if end spot puts king in check
-        List<Piece> activeOpponentPieces = board
-                .getAllPieces()
-                .stream()
-                .filter(piece -> piece.isWhite() != this.isWhite() && !piece.isCaptured())
-                .toList();
-        for(Piece piece:activeOpponentPieces){
-            if(piece.canMove(board, this.getSpot())){
-                return true;
             }
         }
         return false;

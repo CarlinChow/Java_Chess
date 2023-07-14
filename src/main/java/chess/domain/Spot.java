@@ -30,6 +30,10 @@ public class Spot {
 
     public Piece removePiece(){
         Piece tmpPiece = this.piece;
+        if(tmpPiece == null){
+            return null;
+        }
+        tmpPiece.setSpot(null);
         this.piece = null;
         return tmpPiece;
     }

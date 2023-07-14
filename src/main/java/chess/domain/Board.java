@@ -20,12 +20,12 @@ public class Board {
 
     }
 
-    public void resetBoard(){
+    public void reset(){
         // set up pieces
 
     }
 
-    public void clearBoard(){
+    public void clear(){
         for(Spot[] row : this.spots){
             for(Spot spot : row){
                 spot.removePiece();
@@ -72,6 +72,9 @@ public class Board {
 
     public void addPiece(Piece piece){ this.pieces.add(piece); }
 
+    public void removePiece(Piece piece){ this.pieces.remove(piece); }
+
     public void addAllPieces(Collection<Piece> pieces) { this.pieces.addAll(pieces); }
+
 }
 
