@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 public class QueenTest {
     private void setUp(Board board){
         // set up queens in default position on an empty board
+        board.clear();
         Piece whiteQueen = new Queen(true);
         Piece blackQueen = new Queen(false);
         board.getSpotAt(0,3).setPiece(blackQueen);

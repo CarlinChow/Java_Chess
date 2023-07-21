@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 public class RookTest {
     private void setUp(Board board){
+        board.clear();
         Piece blackRook1 = new Rook(false);
         Piece blackRook2 = new Rook(false);
         Piece whiteRook1 = new Rook(true);

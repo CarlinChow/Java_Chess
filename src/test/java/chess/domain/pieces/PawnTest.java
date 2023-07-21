@@ -6,6 +6,15 @@ import chess.domain.*;
 
 
 public class PawnTest {
+    private void setUpBoard(Board board){
+        // set up board with two pawns, a white pawn on pos 6,3 and black pawn on pos 1,3
+        board.clear();
+        Piece whitePawn = new Pawn(true);
+        Piece blackPawn = new Pawn(false);
+        board.getSpotAt(6, 3).setPiece(whitePawn);
+        board.getSpotAt(1, 3).setPiece(blackPawn);
+    }
+
     @Test
     public void testForwardMove(){
         Board board = new Board();
@@ -93,13 +102,5 @@ public class PawnTest {
         assertTrue(whitePawn.canMove(board, board.getSpotAt(5,4)));
         board.getSpotAt(5,4).setPiece(whiteCapturePawn);
         assertFalse(whitePawn.canMove(board, board.getSpotAt(5,4)));
-    }
-
-    private void setUpBoard(Board board){
-        // set up board with two pawns, a white pawn on pos 6,3 and black pawn on pos 1,3
-        Piece whitePawn = new Pawn(true);
-        Piece blackPawn = new Pawn(false);
-        board.getSpotAt(6, 3).setPiece(whitePawn);
-        board.getSpotAt(1, 3).setPiece(blackPawn);
     }
 }
