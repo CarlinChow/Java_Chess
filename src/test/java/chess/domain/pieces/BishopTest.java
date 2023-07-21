@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 
 public class BishopTest {
     private void setUp(Board board){
+        board.clear();
         board.getSpotAt(0,2).setPiece(new Bishop(false));
         board.getSpotAt(0,5).setPiece(new Bishop(false));
         board.getSpotAt(7,2).setPiece(new Bishop(true));

@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 public class KingTest {
     private void setUp(Board board){
+        board.clear();
         Piece blackKing = new King(false);
         Piece whiteKing = new King(true);
         board.getSpotAt("e8").setPiece(blackKing);

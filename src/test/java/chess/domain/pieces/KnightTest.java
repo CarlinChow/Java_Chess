@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 
 public class KnightTest {
     private void setUp(Board board){
+        board.clear();
         board.getSpotAt("b8").setPiece(new Knight(false));
         board.getSpotAt("g8").setPiece(new Knight(false));
         board.getSpotAt("b1").setPiece(new Knight(true));
