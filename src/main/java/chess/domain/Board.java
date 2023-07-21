@@ -1,9 +1,5 @@
 package chess.domain;
 
-<<<<<<< HEAD
-import java.lang.reflect.Array;
-=======
->>>>>>> chessPieces
 import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
@@ -11,11 +7,7 @@ import chess.domain.pieces.*;
 
 public class Board {
     private final Spot[][] spots;
-<<<<<<< HEAD
-    private List<Piece> pieces;
-=======
     private final List<Piece> pieces;
->>>>>>> chessPieces
 
     public Board(){
         this.spots = new Spot[8][8];
@@ -29,10 +21,7 @@ public class Board {
     }
 
     public void reset(){ // reset board to piece starting position
-<<<<<<< HEAD
-=======
         this.clear();
->>>>>>> chessPieces
         // black pawns
         this.getSpotAt("a7").setPiece(new Pawn(false));
         this.getSpotAt("b7").setPiece(new Pawn(false));
@@ -72,8 +61,6 @@ public class Board {
         this.getSpotAt("h8").setPiece(new Rook(false));
         this.getSpotAt("a1").setPiece(new Rook(true));
         this.getSpotAt("h1").setPiece(new Rook(true));
-<<<<<<< HEAD
-=======
 
         for(int i = 0; i < 2; i++){
             for(int j = 0; j < 8; j++){
@@ -85,7 +72,6 @@ public class Board {
                 this.pieces.add(this.getSpotAt(i, j).getPiece());
             }
         }
->>>>>>> chessPieces
     }
 
     public void clear(){
@@ -120,11 +106,7 @@ public class Board {
         for(char alphabet = 'a'; alphabet < 'h' + 1; alphabet++){
             System.out.print(" " + alphabet + " ");
         }
-<<<<<<< HEAD
-        System.out.println("");
-=======
         System.out.println();
->>>>>>> chessPieces
         for (int row = 0; row < this.spots.length; row++) {
             System.out.print(spots[row][0].getChessRow() + " ");
             for (int col = 0; col < this.spots[0].length; col++) {
@@ -148,11 +130,7 @@ public class Board {
         for(char alphabet = 'a'; alphabet < 'h' + 1; alphabet++){
             System.out.print(" " + alphabet + " ");
         }
-<<<<<<< HEAD
-        System.out.println("");
-=======
         System.out.println();
->>>>>>> chessPieces
         for (int row = spots.length - 1; row > -1; row--) {
             System.out.print(spots[row][0].getChessRow() + " ");
             for (int col = 0; col < this.spots[0].length; col++) {
