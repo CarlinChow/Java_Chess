@@ -3,7 +3,6 @@ package chess.domain;
 import chess.domain.pieces.*;
 import static org.junit.Assert.*;
 import org.junit.Test;
-import chess.domain.pieces.*;
 
 public class BoardTest {
     @Test
