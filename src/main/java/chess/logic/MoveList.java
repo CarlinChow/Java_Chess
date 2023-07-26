@@ -15,7 +15,7 @@ public class MoveList {
         return this.moves;
     }
 
-    public void addMove(Move move){
+    public void add(Move move){
         this.moves.add(move);
     }
 
@@ -26,5 +26,10 @@ public class MoveList {
             }
         }
         return false;
+    }
+
+    @Override
+    public String toString(){
+        return this.moves.toString();
     }
 }
