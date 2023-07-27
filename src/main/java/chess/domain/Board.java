@@ -153,6 +153,18 @@ public class Board {
         return this.pieces;
     }
 
+    public List<Piece> getAllActivePieces() {
+        return this.pieces.stream()
+                .filter(piece -> !piece.isCaptured())
+                .toList();
+    }
+
+    public List<Piece> getAllCapturedPieces(){
+        return this.pieces.stream()
+                .filter(piece -> piece.isCaptured())
+                .toList();
+    }
+
     public void addPiece(Piece piece){ this.pieces.add(piece); }
 
     public void removePiece(Piece piece){ this.pieces.remove(piece); }
