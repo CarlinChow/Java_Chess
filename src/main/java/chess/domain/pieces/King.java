@@ -3,15 +3,14 @@ package chess.domain.pieces;
 import chess.domain.*;
 import java.lang.Math;
 import java.util.List;
+import chess.logic.*;
 
 public class King extends Piece{
     private boolean isCastlingDone;
-    private boolean hasMoved;
 
     public King(boolean white){
         super(white);
         this.isCastlingDone = false;
-        this.hasMoved = false;
     }
 
     public boolean getIsCastlingDone(){
@@ -21,12 +20,6 @@ public class King extends Piece{
     public void setIsCastlingDone(boolean done){
         this.isCastlingDone = done;
     }
-
-    public boolean getHasMoved(){
-        return this.hasMoved;
-    }
-
-    public void setHasMoved(boolean hasMoved){ this.hasMoved = hasMoved; }
 
     public boolean canMove(Board board, Spot start, Spot end){
         if(start.equals(end)){ return false; }
@@ -49,9 +42,9 @@ public class King extends Piece{
             capturedPiece.setCaptured(true);
         }
         List<Piece> activeOpponentPieces = board
-                .getAllPieces()
+                .getAllActivePieces()
                 .stream()
-                .filter(piece -> this.isWhite() != piece.isWhite() && !piece.isCaptured())
+                .filter(piece -> this.isWhite() != piece.isWhite())
                 .toList();
         for(Piece piece:activeOpponentPieces){
             if(piece.canCapture(board, end)){
@@ -69,10 +62,8 @@ public class King extends Piece{
         return false;
     }
 
-    public boolean canCastle(Board board, Spot end){ // work on later when moveList object is created, movelist can be a parameter
-        if(this.isCastlingDone || this.hasMoved){
-            return false;
-        }else if(this.isCurrentlyInCheck(board)){
+    public boolean canCastle(Board board, Spot end, MoveList moveList){
+        if(this.isCastlingDone || moveList.hasPieceMoved(this) || this.isCurrentlyInCheck(board)){
             return false;
         }
         int verticalMovement = this.getSpot().getRow() - end.getRow();
@@ -85,7 +76,22 @@ public class King extends Piece{
                 rookSpot = board.getSpotAt(this.getSpot().getRow(), 7);
             }
             if(!rookSpot.isEmpty() && rookSpot.getPiece() instanceof Rook rook){
-                return !rook.getHasMoved();
+                int currentRow = this.getSpot().getRow();
+                if(rookSpot.getColumn() == 0){
+                    for(int j = 1; j <= 3; j++){
+                        if(!board.getSpotAt(currentRow, j).isEmpty()){
+                            return false;
+                        }
+                    }
+                }
+                else{
+                    for(int j = 5; j <= 6; j++){
+                        if(!board.getSpotAt(currentRow, j).isEmpty()){
+                            return false;
+                        }
+                    }
+                }
+                return moveList.hasPieceMoved(rook);
             }
         }
         return false;

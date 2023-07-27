@@ -10,7 +10,7 @@ public class Move {
 
     public Move(Piece piece, Spot start, Spot end, Piece capturedPiece){
         this.piece = piece;
-        this.start = piece.getSpot();
+        this.start = start;
         this.end = end;
         this.capturedPiece = capturedPiece;
     }

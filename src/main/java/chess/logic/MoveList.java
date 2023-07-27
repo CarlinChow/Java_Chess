@@ -19,7 +19,7 @@ public class MoveList {
         this.moves.add(move);
     }
 
-    public boolean hasMoved(Piece piece){
+    public boolean hasPieceMoved(Piece piece){
         for(Move move: this.moves){
             if(move.getPiece().equals(piece)){
                 return true;
