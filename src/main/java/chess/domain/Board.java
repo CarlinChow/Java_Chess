@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ArrayList;
 import chess.domain.pieces.*;
+import static java.util.function.Predicate.not;
 
 public class Board {
     private final Spot[][] spots;
@@ -96,7 +97,7 @@ public class Board {
             row > this.spots.length - 1 ||
             column > this.spots.length - 1)
         {
-            return null;
+            throw new ArrayIndexOutOfBoundsException("row and/or column are not within bounds");
         }
         return this.spots[row][column];
     }
@@ -154,20 +155,26 @@ public class Board {
     }
 
     public List<Piece> getAllActivePieces() {
+        System.out.print(this.pieces);
         return this.pieces
                 .stream()
-                .filter(piece -> !piece.isCaptured())
+                .filter(not(Piece::isCaptured))
                 .toList();
     }
 
     public List<Piece> getAllCapturedPieces(){
         return this.pieces
                 .stream()
-                .filter(piece -> piece.isCaptured())
+                .filter(Piece::isCaptured)
                 .toList();
     }
 
-    public void addPiece(Piece piece){ this.pieces.add(piece); }
+    public void addPiece(Piece piece){
+        if(piece == null){
+            throw new IllegalArgumentException("Piece parameter cannot be null");
+        }
+        this.pieces.add(piece);
+    }
 
     public void removePiece(Piece piece){ this.pieces.remove(piece); }
 

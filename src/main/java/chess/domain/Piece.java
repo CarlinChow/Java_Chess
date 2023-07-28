@@ -9,6 +9,7 @@ public abstract class Piece {
     public Piece(boolean white){
         this.white = white;
         this.id = UUID.randomUUID().toString();
+        this.captured = false;
     }
 
     public abstract boolean canMove(Board board, Spot start, Spot end);

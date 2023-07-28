@@ -1,5 +1,6 @@
 package chess.domain.pieces;
 
+import chess.logic.MoveList;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import chess.domain.*;
@@ -229,7 +230,23 @@ public class KingTest {
     }
 
     @Test
-    public void TestCastling(){ // work on later when MoveList Class is created
-
+    public void TestCastling(){
+        Board board = new Board();
+        this.setUp(board);
+        MoveList moveList = new MoveList();
+        King whiteKing = (King) board.getSpotAt("e1").getPiece();
+        King blackKing = (King) board.getSpotAt("e8").getPiece();
+        board.getSpotAt("a8").setPiece(new Rook(false));
+        board.getSpotAt("h8").setPiece(new Rook(false));
+        board.getSpotAt("a1").setPiece(new Rook(true));
+        board.getSpotAt("g1").setPiece(new Rook(true));
+        board.addPiece(board.getSpotAt("a8").getPiece());
+        board.addPiece(board.getSpotAt("h8").getPiece());
+        board.addPiece(board.getSpotAt("a1").getPiece());
+        board.addPiece(board.getSpotAt("g1").getPiece());
+        assertTrue(whiteKing.canCastle(board, "g1", moveList));
+        assertTrue(whiteKing.canCastle(board, "c1", moveList));
+        assertTrue(blackKing.canCastle(board, "g8", moveList));
+        assertTrue(blackKing.canCastle(board, "c8", moveList));
     }
 }
