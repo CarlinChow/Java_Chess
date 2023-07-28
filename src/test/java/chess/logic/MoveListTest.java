@@ -31,10 +31,10 @@ public class MoveListTest {
         Piece whitePawn = board.getSpotAt("e2").getPiece();
         Piece blackRook = board.getSpotAt("a8").getPiece();
         MoveList moveList = new MoveList();
-        assertFalse(moveList.hasMoved(whitePawn));
-        assertFalse(moveList.hasMoved(blackRook));
+        assertFalse(moveList.hasPieceMoved(whitePawn));
+        assertFalse(moveList.hasPieceMoved(blackRook));
         moveList.add(new Move(whitePawn, board.getSpotAt("e4")));
-        assertTrue(moveList.hasMoved(whitePawn));
-        assertFalse(moveList.hasMoved(blackRook));
+        assertTrue(moveList.hasPieceMoved(whitePawn));
+        assertFalse(moveList.hasPieceMoved(blackRook));
     }
 }

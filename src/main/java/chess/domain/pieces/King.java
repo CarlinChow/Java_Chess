@@ -64,6 +64,7 @@ public class King extends Piece{
 
     public boolean canCastle(Board board, Spot end, MoveList moveList){
         if(this.isCastlingDone || moveList.hasPieceMoved(this) || this.isCurrentlyInCheck(board)){
+            System.out.println("Failing here");
             return false;
         }
         int verticalMovement = this.getSpot().getRow() - end.getRow();
@@ -80,6 +81,7 @@ public class King extends Piece{
                 if(rookSpot.getColumn() == 0){
                     for(int j = 1; j <= 3; j++){
                         if(!board.getSpotAt(currentRow, j).isEmpty()){
+                            System.out.println("Failing here 1");
                             return false;
                         }
                     }
@@ -87,6 +89,7 @@ public class King extends Piece{
                 else{
                     for(int j = 5; j <= 6; j++){
                         if(!board.getSpotAt(currentRow, j).isEmpty()){
+                            System.out.println("Failing here 2");
                             return false;
                         }
                     }
@@ -95,6 +98,10 @@ public class King extends Piece{
             }
         }
         return false;
+    }
+
+    public boolean canCastle(Board board, String chessCoordinates, MoveList moveList){
+        return this.canCastle(board, board.getSpotAt(chessCoordinates), moveList);
     }
 
     @Override
