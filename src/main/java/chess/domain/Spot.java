@@ -1,5 +1,7 @@
 package chess.domain;
 
+import java.util.Objects;
+
 public class Spot {
     private int row;
     private int column;
@@ -20,10 +22,14 @@ public class Spot {
     }
 
     public Piece getPiece(){
-        return this.piece;
+        // https://stackoverflow.com/questions/271526/how-do-i-avoid-checking-for-nulls-in-java
+        return Objects.requireNonNull(this.piece, "spot " + this.getChessCoordinates() + " does not contain a piece");
     }
 
     public void setPiece(Piece piece){
+        if(piece == null){
+            throw new IllegalArgumentException("attempting to Spot.setPiece() with null value");
+        }
         this.piece = piece;
         piece.setSpot(this);
     }
@@ -101,7 +107,12 @@ public class Spot {
             return true;
         }
         if (obj instanceof Spot spot) {
-            return this.getRow() == spot.getRow() && this.getColumn() == spot.getColumn() && this.piece == spot.getPiece();
+            if(!this.isEmpty() && !spot.isEmpty()){
+                return this.getRow() == spot.getRow() &&
+                       this.getColumn() == spot.getColumn() &&
+                       this.piece == spot.getPiece();
+            }
+            return this.getRow() == spot.getRow() && this.getColumn() == spot.getColumn();
         }
         return false;
     }

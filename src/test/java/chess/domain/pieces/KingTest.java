@@ -240,7 +240,7 @@ public class KingTest {
         board.getSpotAt("h8").setPiece(new Rook(false));
         board.getSpotAt("a1").setPiece(new Rook(true));
         board.getSpotAt("g1").setPiece(new Rook(true));
-        board.addPiece(board.getSpotAt("a8").getPiece());
+        board.addPiece(board.getSpotAt("a1").getPiece());
         board.addPiece(board.getSpotAt("h8").getPiece());
         board.addPiece(board.getSpotAt("a1").getPiece());
         board.addPiece(board.getSpotAt("g1").getPiece());
