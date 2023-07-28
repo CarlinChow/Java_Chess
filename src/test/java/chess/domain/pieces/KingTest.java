@@ -1,10 +1,9 @@
 package chess.domain.pieces;
 
-import chess.logic.MoveList;
+import chess.logic.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import chess.domain.*;
-
 import java.util.Arrays;
 
 public class KingTest {
@@ -236,17 +235,101 @@ public class KingTest {
         MoveList moveList = new MoveList();
         King whiteKing = (King) board.getSpotAt("e1").getPiece();
         King blackKing = (King) board.getSpotAt("e8").getPiece();
-        board.getSpotAt("a8").setPiece(new Rook(false));
-        board.getSpotAt("h8").setPiece(new Rook(false));
-        board.getSpotAt("a1").setPiece(new Rook(true));
-        board.getSpotAt("g1").setPiece(new Rook(true));
-        board.addPiece(board.getSpotAt("a1").getPiece());
-        board.addPiece(board.getSpotAt("h8").getPiece());
-        board.addPiece(board.getSpotAt("a1").getPiece());
-        board.addPiece(board.getSpotAt("g1").getPiece());
-        assertTrue(whiteKing.canCastle(board, "g1", moveList));
-        assertTrue(whiteKing.canCastle(board, "c1", moveList));
-        assertTrue(blackKing.canCastle(board, "g8", moveList));
+
+        // rooks not at default pos
+        assertFalse(blackKing.canCastle(board, "c8", moveList));
+        assertFalse(blackKing.canCastle(board, "g8", moveList));
+        assertFalse(whiteKing.canCastle(board, "c1", moveList));
+        assertFalse(whiteKing.canCastle(board, "g1", moveList));
+
+        Piece blackQueenSideRook = new Rook(false);
+        Piece blackKingSideRook = new Rook(false);
+        Piece whiteQueenSideRook = new Rook(true);
+        Piece whiteKingSideRook = new Rook(true);
+        board.getSpotAt("a8").setPiece(blackQueenSideRook);
+        board.getSpotAt("h8").setPiece(blackKingSideRook);
+        board.getSpotAt("a1").setPiece(whiteQueenSideRook);
+        board.getSpotAt("h1").setPiece(whiteKingSideRook);
+        board.addPiece(blackQueenSideRook);
+        board.addPiece(blackKingSideRook);
+        board.addPiece(whiteQueenSideRook);
+        board.addPiece(whiteKingSideRook);
+
+        // legal castle
         assertTrue(blackKing.canCastle(board, "c8", moveList));
+        assertTrue(blackKing.canCastle(board, "g8", moveList));
+        assertTrue(whiteKing.canCastle(board, "c1", moveList));
+        assertTrue(whiteKing.canCastle(board, "g1", moveList));
+
+        // non castle moves
+        assertFalse(blackKing.canCastle(board, "b8", moveList));
+        assertFalse(blackKing.canCastle(board, "d8", moveList));
+        assertFalse(blackKing.canCastle(board, "f8", moveList));
+        assertFalse(blackKing.canCastle(board, "h8", moveList));
+        assertFalse(whiteKing.canCastle(board, "b1", moveList));
+        assertFalse(whiteKing.canCastle(board, "d1", moveList));
+        assertFalse(whiteKing.canCastle(board, "f1", moveList));
+        assertFalse(whiteKing.canCastle(board, "h1", moveList));
+
+        // castling after rook movement
+        moveList.add(new Move(blackQueenSideRook, board.getSpotAt("a5")));
+        moveList.add(new Move(blackQueenSideRook, board.getSpotAt("a8")));
+        moveList.add(new Move(whiteKingSideRook, board.getSpotAt("h6")));
+        moveList.add(new Move(whiteKingSideRook, board.getSpotAt("h1")));
+        assertFalse(blackKing.canCastle(board, "c8", moveList));
+        assertTrue(blackKing.canCastle(board, "g8", moveList));
+        assertFalse(whiteKing.canCastle(board, "g1", moveList));
+        assertTrue(whiteKing.canCastle(board, "c1", moveList));
+
+        // castling after king movement
+        moveList.add(new Move(blackKing, board.getSpotAt("e7")));
+        moveList.add(new Move(blackKing, board.getSpotAt("e8")));
+        moveList.add(new Move(whiteKing, board.getSpotAt("d2")));
+        moveList.add(new Move(whiteKing, board.getSpotAt("e1")));
+        assertFalse(blackKing.canCastle(board, "g8", moveList));
+        assertFalse(whiteKing.canCastle(board, "c1", moveList));
+
+        // castling w/ interference
+        board.reset();
+        moveList = new MoveList();
+        blackKing = (King) board.getSpotAt("e8").getPiece();
+        whiteKing = (King) board.getSpotAt("e1").getPiece();
+        assertFalse(blackKing.canCastle(board, "c8", moveList));
+        assertFalse(blackKing.canCastle(board, "g8", moveList));
+        assertFalse(whiteKing.canCastle(board, "c1", moveList));
+        assertFalse(whiteKing.canCastle(board, "g1", moveList));
+        // remove queens and king side bishop
+        board.getSpotAt("d8").getPiece().setCaptured(true);
+        board.getSpotAt("d8").removePiece();
+        board.getSpotAt("d1").getPiece().setCaptured(true);
+        board.getSpotAt("d1").removePiece();
+        board.getSpotAt("f8").getPiece().setCaptured(true);
+        board.getSpotAt("f8").removePiece();
+        board.getSpotAt("f1").getPiece().setCaptured(true);
+        board.getSpotAt("f1").removePiece();
+        assertFalse(blackKing.canCastle(board, "c8", moveList));
+        assertFalse(blackKing.canCastle(board, "g8", moveList));
+        assertFalse(whiteKing.canCastle(board, "c1", moveList));
+        assertFalse(whiteKing.canCastle(board, "g1", moveList));
+        // remove queen side bishop
+        board.getSpotAt("c8").getPiece().setCaptured(true);
+        board.getSpotAt("c8").removePiece();
+        board.getSpotAt("c1").getPiece().setCaptured(true);
+        board.getSpotAt("c1").removePiece();
+        assertFalse(blackKing.canCastle(board, "c8", moveList));
+        assertFalse(whiteKing.canCastle(board, "c1", moveList));
+        // remove knights
+        board.getSpotAt("b8").getPiece().setCaptured(true);
+        board.getSpotAt("b8").removePiece();
+        board.getSpotAt("g8").getPiece().setCaptured(true);
+        board.getSpotAt("g8").removePiece();
+        board.getSpotAt("b1").getPiece().setCaptured(true);
+        board.getSpotAt("b1").removePiece();
+        board.getSpotAt("g1").getPiece().setCaptured(true);
+        board.getSpotAt("g1").removePiece();
+        assertTrue(blackKing.canCastle(board, "c8", moveList));
+        assertTrue(blackKing.canCastle(board, "g8", moveList));
+        assertTrue(whiteKing.canCastle(board, "c1", moveList));
+        assertTrue(whiteKing.canCastle(board, "g1", moveList));
     }
 }
