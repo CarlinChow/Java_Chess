@@ -62,7 +62,8 @@ public abstract class Piece {
         if(this == obj){
             return true;
         }
-        if(obj instanceof Piece piece){
+        if(obj != null && obj.getClass() == getClass()){
+            Piece piece = (Piece)obj;
             return UUID.fromString(this.id).equals(UUID.fromString(piece.getId()));
         }
         return false;

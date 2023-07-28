@@ -1,14 +1,15 @@
 package chess.domain;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.stream.Collectors;
 import chess.domain.pieces.*;
 import static java.util.function.Predicate.not;
 
 public class Board {
     private final Spot[][] spots;
-    private final List<Piece> pieces;
+    private final Set<Piece> pieces;
 
     public Board(){
         this.spots = new Spot[8][8];
@@ -17,7 +18,7 @@ public class Board {
                 this.spots[row][column] = new Spot(row, column);
             }
         }
-        this.pieces = new ArrayList<>();
+        this.pieces = new HashSet<>();
         this.reset();
     }
 
@@ -150,23 +151,22 @@ public class Board {
         System.out.println("  ");
     }
 
-    public List<Piece> getAllPieces(){
+    public Set<Piece> getAllPieces(){
         return this.pieces;
     }
 
-    public List<Piece> getAllActivePieces() {
-        System.out.print(this.pieces);
+    public Set<Piece> getAllActivePieces() {
         return this.pieces
                 .stream()
                 .filter(not(Piece::isCaptured))
-                .toList();
+                .collect(Collectors.toSet());
     }
 
-    public List<Piece> getAllCapturedPieces(){
+    public Set<Piece> getAllCapturedPieces(){
         return this.pieces
                 .stream()
                 .filter(Piece::isCaptured)
-                .toList();
+                .collect(Collectors.toSet());
     }
 
     public void addPiece(Piece piece){
