@@ -3,6 +3,7 @@ package chess.domain.pieces;
 import chess.domain.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import java.util.Set;
 
 public class BishopTest {
     private void setUp(Board board){
@@ -134,5 +135,95 @@ public class BishopTest {
         assertFalse(blackBishop2.canMove(board, board.getSpotAt(2,7)));
         assertFalse(whiteBishop1.canMove(board, board.getSpotAt(5,0)));
         assertFalse(whiteBishop2.canMove(board, board.getSpotAt(5,7)));
+    }
+
+    @Test
+    public void testGetMoves(){
+        Board board = new Board();
+        this.setUp(board);
+        Piece whiteQueenBishop = board.getSpotAt("c1").getPiece();
+        Piece whiteKingBishop = board.getSpotAt("f1").getPiece();
+        Piece blackQueenBishop = board.getSpotAt("c8").getPiece();
+        Piece blackKingBishop = board.getSpotAt("f8").getPiece();
+        board.getSpotAt("a3").setPiece(new Pawn(false));
+        board.getSpotAt("h6").setPiece(new Pawn(true));
+        board.getSpotAt("a6").setPiece(new Pawn(false));
+        board.getSpotAt("h3").setPiece(new Pawn(true));
+
+        Set<Spot> whiteQueenBishopMoves = whiteQueenBishop.getMoves(board);
+        Set<Spot> whiteKingBishopMoves = whiteKingBishop.getMoves(board);
+        Set<Spot> blackQueenBishopMoves = blackQueenBishop.getMoves(board);
+        Set<Spot> blackKingBishopMoves = blackKingBishop.getMoves(board);
+
+        assertTrue(whiteQueenBishopMoves.contains(board.getSpotAt("b2")));
+        assertTrue(whiteQueenBishopMoves.contains(board.getSpotAt("a3")));
+        assertTrue(whiteQueenBishopMoves.contains(board.getSpotAt("d2")));
+        assertTrue(whiteQueenBishopMoves.contains(board.getSpotAt("e3")));
+        assertTrue(whiteQueenBishopMoves.contains(board.getSpotAt("f4")));
+        assertTrue(whiteQueenBishopMoves.contains(board.getSpotAt("g5")));
+        assertFalse(whiteQueenBishopMoves.contains(board.getSpotAt("h6")));
+        assertEquals(6, whiteKingBishopMoves.size());
+
+        assertTrue(whiteKingBishopMoves.contains(board.getSpotAt("e2")));
+        assertTrue(whiteKingBishopMoves.contains(board.getSpotAt("d3")));
+        assertTrue(whiteKingBishopMoves.contains(board.getSpotAt("c4")));
+        assertTrue(whiteKingBishopMoves.contains(board.getSpotAt("b5")));
+        assertTrue(whiteKingBishopMoves.contains(board.getSpotAt("a6")));
+        assertTrue(whiteKingBishopMoves.contains(board.getSpotAt("g2")));
+        assertFalse(whiteKingBishopMoves.contains(board.getSpotAt("h3")));
+        assertEquals(6, whiteKingBishopMoves.size());
+
+        assertTrue(blackQueenBishopMoves.contains(board.getSpotAt("b7")));
+        assertTrue(blackQueenBishopMoves.contains(board.getSpotAt("d7")));
+        assertTrue(blackQueenBishopMoves.contains(board.getSpotAt("e6")));
+        assertTrue(blackQueenBishopMoves.contains(board.getSpotAt("f5")));
+        assertTrue(blackQueenBishopMoves.contains(board.getSpotAt("g4")));
+        assertTrue(blackQueenBishopMoves.contains(board.getSpotAt("h3")));
+        assertFalse(blackQueenBishopMoves.contains(board.getSpotAt("h6")));
+        assertEquals(6, blackQueenBishopMoves.size());
+
+        assertTrue(blackKingBishopMoves.contains(board.getSpotAt("e7")));
+        assertTrue(blackKingBishopMoves.contains(board.getSpotAt("d6")));
+        assertTrue(blackKingBishopMoves.contains(board.getSpotAt("c5")));
+        assertTrue(blackKingBishopMoves.contains(board.getSpotAt("b4")));
+        assertTrue(blackKingBishopMoves.contains(board.getSpotAt("g7")));
+        assertTrue(blackKingBishopMoves.contains(board.getSpotAt("h6")));
+        assertFalse(blackKingBishopMoves.contains(board.getSpotAt("a3")));
+        assertEquals(6, blackKingBishopMoves.size());
+
+        // adding interference and potential capture moves
+        board.getSpotAt("d3").setPiece(new Pawn(false));
+        board.getSpotAt("e3").setPiece(new Pawn(true));
+        board.getSpotAt("d6").setPiece(new Pawn(false));
+        board.getSpotAt("e6").setPiece(new Pawn(true));
+
+        whiteQueenBishopMoves = whiteQueenBishop.getMoves(board);
+        whiteKingBishopMoves = whiteKingBishop.getMoves(board);
+        blackQueenBishopMoves = blackQueenBishop.getMoves(board);
+        blackKingBishopMoves = blackKingBishop.getMoves(board);
+
+        assertTrue(whiteQueenBishopMoves.contains(board.getSpotAt("b2")));
+        assertTrue(whiteQueenBishopMoves.contains(board.getSpotAt("a3")));
+        assertTrue(whiteQueenBishopMoves.contains(board.getSpotAt("d2")));
+        assertFalse(whiteQueenBishopMoves.contains(board.getSpotAt("f4")));
+        assertEquals(3, whiteQueenBishopMoves.size());
+
+        assertTrue(whiteKingBishopMoves.contains(board.getSpotAt("e2")));
+        assertTrue(whiteKingBishopMoves.contains(board.getSpotAt("g2")));
+        assertTrue(whiteKingBishopMoves.contains(board.getSpotAt("d3")));
+        assertFalse(whiteKingBishopMoves.contains(board.getSpotAt("c4")));
+        assertEquals(3, whiteKingBishopMoves.size());
+
+        assertTrue(blackQueenBishopMoves.contains(board.getSpotAt("b7")));
+        assertTrue(blackQueenBishopMoves.contains(board.getSpotAt("d7")));
+        assertTrue(blackQueenBishopMoves.contains(board.getSpotAt("e6")));
+        assertFalse(blackQueenBishopMoves.contains(board.getSpotAt("f5")));
+        assertEquals(3, blackQueenBishopMoves.size());
+
+        assertTrue(blackKingBishopMoves.contains(board.getSpotAt("e7")));
+        assertTrue(blackKingBishopMoves.contains(board.getSpotAt("g7")));
+        assertTrue(blackKingBishopMoves.contains(board.getSpotAt("h6")));
+        assertFalse(blackKingBishopMoves.contains(board.getSpotAt("c5")));
+        assertEquals(3, blackKingBishopMoves.size());
     }
 }

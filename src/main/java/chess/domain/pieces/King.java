@@ -1,10 +1,11 @@
 package chess.domain.pieces;
 
 import chess.domain.*;
-import java.lang.Math;
-import java.util.List;
+import static java.lang.Math.abs;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.stream.Collectors;
+
 import chess.logic.*;
 
 public class King extends Piece{
@@ -28,7 +29,7 @@ public class King extends Piece{
         if(start.equals(end)){ return false; }
         int verticalMovement = start.getRow() - end.getRow();
         int horizontalMovement = start.getColumn() - end.getColumn();
-        if(Math.abs(horizontalMovement) < 2 && Math.abs(verticalMovement) < 2){
+        if(abs(horizontalMovement) <= 1 && abs(verticalMovement) <= 1){
             return !this.isChecked(board, end) && (end.isEmpty() || end.getPiece().isWhite() != this.isWhite());
         }
         return false;
@@ -40,25 +41,34 @@ public class King extends Piece{
 
     private boolean isChecked(Board board, Spot end){ // check if end spot puts king in check
         Piece capturedPiece = null;
+        Spot start = this.getSpot();
         if(!end.isEmpty()){ // special case: king performs a capture move
             capturedPiece = end.removePiece();
             capturedPiece.setCaptured(true);
         }
-        List<Piece> activeOpponentPieces = board
+        start.removePiece(); // change board to the state when move is complete
+        end.setPiece(this);
+        Set<Piece> activeOpponentPieces = board
                 .getAllActivePieces()
                 .stream()
                 .filter(piece -> this.isWhite() != piece.isWhite())
-                .toList();
+                .collect(Collectors.toSet());
         for(Piece piece:activeOpponentPieces){
             if(piece.canCapture(board, end)){
-                if(capturedPiece != null){ // reverting board back to original
+                // reverting board back to original
+                end.removePiece();
+                start.setPiece(this);
+                if(capturedPiece != null){
                     capturedPiece.setCaptured(false);
                     end.setPiece(capturedPiece);
                 }
                 return true;
             }
         }
-        if(capturedPiece != null){  // reverting board back to original
+        // reverting board back to original
+        end.removePiece();
+        start.setPiece(this);
+        if(capturedPiece != null){
             capturedPiece.setCaptured(false);
             end.setPiece(capturedPiece);
         }
@@ -71,7 +81,7 @@ public class King extends Piece{
         }
         int verticalMovement = this.getSpot().getRow() - end.getRow();
         int horizontalMovement = this.getSpot().getColumn() - end.getColumn();
-        if(Math.abs(horizontalMovement) == 2 & verticalMovement == 0){
+        if(abs(horizontalMovement) == 2 & verticalMovement == 0){
             Spot rookSpot;
             if(horizontalMovement > 0) { // castle left
                 rookSpot = board.getSpotAt(this.getSpot().getRow(), 0);
