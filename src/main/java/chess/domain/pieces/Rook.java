@@ -5,6 +5,7 @@ import chess.domain.Board;
 import chess.domain.Spot;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Rook extends Piece {
     public Rook(boolean white){
@@ -64,7 +65,29 @@ public class Rook extends Piece {
     @Override
     public Set<Spot> getMoves(Board board){
         Set<Spot> moves = new HashSet<>();
-        return moves;
+        Spot currSpot = this.getSpot();
+        int currRow = currSpot.getRow();
+        int currCol = currSpot.getColumn();
+        // down
+        for(int i = currRow + 1; i <= 7; i++){
+            moves.add(board.getSpotAt(i, currCol));
+        }
+        // up
+        for(int i = currRow - 1; i >= 0; i--){
+            moves.add(board.getSpotAt(i, currCol));
+        }
+        // right
+        for(int j = currCol + 1; j <= 7; j++){
+            moves.add(board.getSpotAt(currRow, j));
+        }
+        // left
+        for(int j = currCol - 1; j >= 0; j--){
+            moves.add(board.getSpotAt(currRow, j));
+        }
+        return moves
+                .stream()
+                .filter(move -> this.canMove(board, move))
+                .collect(Collectors.toSet());
     }
 
     @Override
