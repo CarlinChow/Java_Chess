@@ -3,14 +3,12 @@ package chess.domain.pieces;
 import chess.domain.Piece;
 import chess.domain.Board;
 import chess.domain.Spot;
-import java.lang.Math;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Rook extends Piece {
-    private boolean hasMoved;
-
     public Rook(boolean white){
         super(white);
-        this.hasMoved = false;
     }
 
     @Override
@@ -32,15 +30,14 @@ public class Rook extends Piece {
                         return false;
                     }
                 }
-                return end.isEmpty() || end.getPiece().isWhite() != this.isWhite();
             } else {
                 for (int j = startColumn - 1; j > endColumn; j--) {
                     if (!board.getSpotAt(row, j).isEmpty()) {
                         return false;
                     }
                 }
-                return end.isEmpty() || end.getPiece().isWhite() != this.isWhite();
             }
+            return end.isEmpty() || end.getPiece().isWhite() != this.isWhite();
         }
         if (horizontalMovement == 0) {
             int startRow = start.getRow();
@@ -52,24 +49,22 @@ public class Rook extends Piece {
                         return false;
                     }
                 }
-                return end.isEmpty() || end.getPiece().isWhite() != this.isWhite();
             } else {
                 for (int i = startRow - 1; i > endRow; i--) {
                     if (!board.getSpotAt(i, column).isEmpty()) {
                         return false;
                     }
                 }
-                return end.isEmpty() || end.getPiece().isWhite() != this.isWhite();
             }
+            return end.isEmpty() || end.getPiece().isWhite() != this.isWhite();
         }
         return false;
     }
 
-    public boolean getHasMoved(){
-        return this.hasMoved;
-    }
-    public void setHasMoved(boolean hasMoved){
-        this.hasMoved = hasMoved;
+    @Override
+    public Set<Spot> getMoves(Board board){
+        Set<Spot> moves = new HashSet<>();
+        return moves;
     }
 
     @Override

@@ -98,7 +98,7 @@ public class Spot {
 
     @Override
     public String toString(){
-        return "position: " + this.getChessCoordinates() + " on row: " + this.row + " and column: " + this.column;
+        return this.getChessCoordinates();
     }
 
     @Override
