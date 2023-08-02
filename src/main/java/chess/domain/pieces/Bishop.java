@@ -2,6 +2,9 @@ package chess.domain.pieces;
 
 import chess.domain.*;
 import static java.lang.Math.abs;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.stream.Collectors;
 
 public class Bishop extends Piece{
     public Bishop(boolean white){
@@ -55,6 +58,34 @@ public class Bishop extends Piece{
             }
             return end.isEmpty() || end.getPiece().isWhite() != this.isWhite();
         }
+    }
+
+    @Override
+    public Set<Spot> getMoves(Board board){
+        Set<Spot> moves = new HashSet<>();
+        Spot currSpot = this.getSpot();
+        int currRow = currSpot.getRow();
+        int currColumn = currSpot.getColumn();
+        // movement down and right
+        for(int i = currRow + 1, j = currColumn + 1; i <= 7 && j <= 7; i++, j++){
+            moves.add(board.getSpotAt(i, j));
+        }
+        // movement up and right
+        for(int i = currRow - 1, j = currColumn + 1; i >= 0 && j <= 7; i--, j++){
+            moves.add(board.getSpotAt(i, j));
+        }
+        // movement down and left
+        for(int i = currRow + 1, j = currColumn - 1; i <= 7 && j >= 0; i++, j--){
+            moves.add(board.getSpotAt(i, j));
+        }
+        // movement up and left
+        for(int i = currRow - 1, j = currColumn - 1; i >= 0 && j >= 0; i--, j--){
+            moves.add(board.getSpotAt(i, j));
+        }
+        return moves
+                .stream()
+                .filter(spot -> this.canMove(board, spot))
+                .collect(Collectors.toSet());
     }
 
     @Override

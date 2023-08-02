@@ -1,5 +1,7 @@
 package chess.domain;
+
 import java.util.UUID;
+import java.util.Set;
 public abstract class Piece {
     private final String id;
     private Spot spot;
@@ -22,13 +24,19 @@ public abstract class Piece {
         return this.canMove(board, board.getSpotAt(chessCoordinates));
     }
 
+    public boolean canCapture(Board board, Spot start, Spot end){
+        return this.canMove(board, start, end);
+    }
+
     public boolean canCapture(Board board, Spot end){
-        return this.canMove(board, end);
+        return this.canCapture(board, this.spot, end);
     }
 
     public boolean canCapture(Board board, String chessCoordinates){
         return this.canCapture(board, board.getSpotAt(chessCoordinates));
     }
+
+    public abstract Set<Spot> getMoves(Board board);
 
     public boolean isWhite(){
         return this.white;

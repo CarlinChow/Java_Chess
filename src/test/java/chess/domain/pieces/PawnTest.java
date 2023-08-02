@@ -3,22 +3,23 @@ package chess.domain.pieces;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import chess.domain.*;
+import java.util.Set;
 
 
 public class PawnTest {
-    private void setUpBoard(Board board){
+    private void setUp(Board board){
         // set up board with two pawns, a white pawn on pos 6,3 and black pawn on pos 1,3
         board.clear();
         Piece whitePawn = new Pawn(true);
         Piece blackPawn = new Pawn(false);
-        board.getSpotAt(6, 3).setPiece(whitePawn);
-        board.getSpotAt(1, 3).setPiece(blackPawn);
+        board.getSpotAt("d2").setPiece(whitePawn);
+        board.getSpotAt("d7").setPiece(blackPawn);
     }
 
     @Test
     public void testForwardMove(){
         Board board = new Board();
-        this.setUpBoard(board);
+        this.setUp(board);
         Piece whitePawn =  board.getSpotAt(6, 3).getPiece();
         Piece blackPawn = board.getSpotAt(1, 3).getPiece();
         // move forward one spot
@@ -43,7 +44,7 @@ public class PawnTest {
     @Test
     public void testIllegalMove(){
         Board board = new Board();
-        this.setUpBoard(board);
+        this.setUp(board);
         Piece whitePawn =  board.getSpotAt(6, 3).getPiece();
         Piece blackPawn = board.getSpotAt(1, 3).getPiece();
 
@@ -75,7 +76,7 @@ public class PawnTest {
     @Test
     public void testCapture(){
         Board board = new Board();
-        this.setUpBoard(board);
+        this.setUp(board);
         Piece whitePawn =  board.getSpotAt(6, 3).getPiece();
         Piece blackPawn = board.getSpotAt(1, 3).getPiece();
 
@@ -102,5 +103,79 @@ public class PawnTest {
         assertTrue(whitePawn.canMove(board, board.getSpotAt(5,4)));
         board.getSpotAt(5,4).setPiece(whiteCapturePawn);
         assertFalse(whitePawn.canMove(board, board.getSpotAt(5,4)));
+    }
+
+    @Test
+    public void testGetMoves(){
+        Board board = new Board();
+        this.setUp(board);
+        Piece whitePawn = board.getSpotAt("d2").getPiece();
+        Piece blackPawn = board.getSpotAt("d7").getPiece();
+        Set<Spot> whitePawnMoves = whitePawn.getMoves(board);
+        Set<Spot> blackPawnMoves = blackPawn.getMoves(board);
+
+        // assert possible moves
+        assertTrue(whitePawnMoves.contains(board.getSpotAt("d3")));
+        assertEquals(1, whitePawnMoves.size());
+        assertTrue(blackPawnMoves.contains(board.getSpotAt("d6")));
+        assertEquals(1, blackPawnMoves.size());
+
+        board.getSpotAt("c3").setPiece(new Pawn(true));
+        board.getSpotAt("e3").setPiece(new Pawn(false));
+        board.getSpotAt("c6").setPiece(new Pawn(true));
+        board.getSpotAt("e6").setPiece(new Pawn(false));
+
+        whitePawnMoves = whitePawn.getMoves(board);
+        blackPawnMoves = blackPawn.getMoves(board);
+
+        // moves with potential capture spot
+        assertTrue(whitePawnMoves.contains(board.getSpotAt("d3")));
+        assertTrue(whitePawnMoves.contains(board.getSpotAt("e3")));
+        assertEquals(2, whitePawnMoves.size());
+        assertTrue(blackPawnMoves.contains(board.getSpotAt("c6")));
+        assertTrue(blackPawnMoves.contains(board.getSpotAt("d6")));
+        assertEquals(2, blackPawnMoves.size());
+
+        board.getSpotAt("c3").setPiece(new Pawn(false));
+        board.getSpotAt("e6").setPiece(new Pawn(true));
+
+        whitePawnMoves = whitePawn.getMoves(board);
+        blackPawnMoves = blackPawn.getMoves(board);
+
+        assertTrue(whitePawnMoves.contains(board.getSpotAt("d3")));
+        assertTrue(whitePawnMoves.contains(board.getSpotAt("e3")));
+        assertTrue(whitePawnMoves.contains(board.getSpotAt("c3")));
+        assertEquals(3, whitePawnMoves.size());
+        assertTrue(blackPawnMoves.contains(board.getSpotAt("c6")));
+        assertTrue(blackPawnMoves.contains(board.getSpotAt("e6")));
+        assertTrue(blackPawnMoves.contains(board.getSpotAt("d6")));
+        assertEquals(3, blackPawnMoves.size());
+
+        board.getSpotAt("d3").setPiece(new Queen(false));
+        board.getSpotAt("d6").setPiece(new Queen(true));
+
+        whitePawnMoves = whitePawn.getMoves(board);
+        blackPawnMoves = blackPawn.getMoves(board);
+
+        assertTrue(whitePawnMoves.contains(board.getSpotAt("e3")));
+        assertTrue(whitePawnMoves.contains(board.getSpotAt("c3")));
+        assertEquals(2, whitePawnMoves.size());
+        assertTrue(blackPawnMoves.contains(board.getSpotAt("e6")));
+        assertTrue(blackPawnMoves.contains(board.getSpotAt("c6")));
+        assertEquals(2, blackPawnMoves.size());
+
+        board.getSpotAt("d3").setPiece(new Queen(true));
+        board.getSpotAt("d6").setPiece(new Queen(false));
+
+        whitePawnMoves = whitePawn.getMoves(board);
+        blackPawnMoves = blackPawn.getMoves(board);
+
+        assertTrue(whitePawnMoves.contains(board.getSpotAt("e3")));
+        assertTrue(whitePawnMoves.contains(board.getSpotAt("c3")));
+        assertEquals(2, whitePawnMoves.size());
+        assertTrue(blackPawnMoves.contains(board.getSpotAt("e6")));
+        assertTrue(blackPawnMoves.contains(board.getSpotAt("c6")));
+        assertEquals(2, blackPawnMoves.size());
+
     }
 }

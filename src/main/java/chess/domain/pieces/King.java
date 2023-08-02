@@ -3,6 +3,8 @@ package chess.domain.pieces;
 import chess.domain.*;
 import java.lang.Math;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 import chess.logic.*;
 
 public class King extends Piece{
@@ -21,6 +23,7 @@ public class King extends Piece{
         this.isCastlingDone = done;
     }
 
+    @Override
     public boolean canMove(Board board, Spot start, Spot end){
         if(start.equals(end)){ return false; }
         int verticalMovement = start.getRow() - end.getRow();
@@ -99,6 +102,12 @@ public class King extends Piece{
 
     public boolean canCastle(Board board, String chessCoordinates, MoveList moveList){
         return this.canCastle(board, board.getSpotAt(chessCoordinates), moveList);
+    }
+
+    @Override
+    public Set<Spot> getMoves(Board board){
+        Set<Spot> moves = new HashSet<>();
+        return moves;
     }
 
     @Override

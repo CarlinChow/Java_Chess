@@ -2,6 +2,9 @@ package chess.domain.pieces;
 
 import chess.domain.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Queen extends Piece{
     public Queen(boolean white){
         super(white);
@@ -13,6 +16,13 @@ public class Queen extends Piece{
         Piece rook = new Rook(this.isWhite());
         return bishop.canMove(board, start, end) || rook.canMove(board, start, end);
     }
+    @Override
+    public Set<Spot> getMoves(Board board){
+        Set<Spot> moves = new HashSet<>();
+        return moves;
+    }
+
+    @Override
     public String toString(){
         return isWhite() ? "\u2655" : "\u265B";
     }
