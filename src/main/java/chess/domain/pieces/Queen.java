@@ -16,9 +16,16 @@ public class Queen extends Piece{
         Piece rook = new Rook(this.isWhite());
         return bishop.canMove(board, start, end) || rook.canMove(board, start, end);
     }
+
     @Override
     public Set<Spot> getMoves(Board board){
         Set<Spot> moves = new HashSet<>();
+        Piece bishop = new Bishop(this.isWhite());
+        Piece rook = new Rook(this.isWhite());
+        bishop.setSpot(this.getSpot());
+        rook.setSpot(this.getSpot());
+        moves.addAll(bishop.getMoves(board));
+        moves.addAll(rook.getMoves(board));
         return moves;
     }
 
