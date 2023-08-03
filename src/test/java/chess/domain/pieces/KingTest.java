@@ -5,6 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import chess.domain.*;
 import java.util.Arrays;
+import java.util.Set;
 
 public class KingTest {
     private void setUp(Board board){
@@ -57,10 +58,9 @@ public class KingTest {
         board.getSpotAt("f7").setPiece(pawn4);
         board.getSpotAt("e7").setPiece(pawn5);
         board.addAllPieces(Arrays.asList(pawn1,pawn2,pawn3,pawn4,pawn5));
-        board.print();
-//        assertTrue(blackKing.canMove(board, "d7"));
-//        assertTrue(blackKing.canMove(board, "e7"));
-//        assertTrue(blackKing.canMove(board, "f7"));
+        assertTrue(blackKing.canMove(board, "d7"));
+        assertTrue(blackKing.canMove(board, "e7"));
+        assertTrue(blackKing.canMove(board, "f7"));
         assertFalse(blackKing.canMove(board, "d8"));
         assertFalse(blackKing.canMove(board, "f8"));
 
@@ -332,5 +332,60 @@ public class KingTest {
         assertTrue(blackKing.canCastle(board, "g8", moveList));
         assertTrue(whiteKing.canCastle(board, "c1", moveList));
         assertTrue(whiteKing.canCastle(board, "g1", moveList));
+    }
+
+    @Test
+    public void testGetMoves(){
+        Board board = new Board();
+        this.setUp(board);
+        Piece blackKing = board.getSpotAt("e8").getPiece();
+        Piece whiteKing = board.getSpotAt("e1").getPiece();
+        Set<Spot> blackKingMoves = blackKing.getMoves(board);
+        Set<Spot> whiteKingMoves = whiteKing.getMoves(board);
+
+        assertTrue(blackKingMoves.contains(board.getSpotAt("d8")));
+        assertTrue(blackKingMoves.contains(board.getSpotAt("d7")));
+        assertTrue(blackKingMoves.contains(board.getSpotAt("e7")));
+        assertTrue(blackKingMoves.contains(board.getSpotAt("f7")));
+        assertTrue(blackKingMoves.contains(board.getSpotAt("f8")));
+        assertEquals(5, blackKingMoves.size());
+        assertTrue(whiteKingMoves.contains(board.getSpotAt("d1")));
+        assertTrue(whiteKingMoves.contains(board.getSpotAt("d2")));
+        assertTrue(whiteKingMoves.contains(board.getSpotAt("e2")));
+        assertTrue(whiteKingMoves.contains(board.getSpotAt("f2")));
+        assertTrue(whiteKingMoves.contains(board.getSpotAt("f1")));
+        assertEquals(5, whiteKingMoves.size());
+
+        // adding interference
+        Piece whitePawn = new Pawn(true);
+        Piece blackPawn = new Pawn(false);
+        Piece whiteKnight = new Knight(true);
+        Piece blackKnight = new Knight(false);
+        board.getSpotAt("g6").setPiece(whitePawn);
+        board.getSpotAt("g3").setPiece(blackPawn);
+        board.getSpotAt("c6").setPiece(whiteKnight);
+        board.getSpotAt("c3").setPiece(blackKnight);
+        board.addAllPieces(Arrays.asList(whitePawn,blackPawn,whiteKnight,blackKnight));
+        blackKingMoves = blackKing.getMoves(board);
+        whiteKingMoves = whiteKing.getMoves(board);
+
+        assertTrue(blackKingMoves.contains(board.getSpotAt("d7")));
+        assertTrue(blackKingMoves.contains(board.getSpotAt("f8")));
+        assertEquals(2, blackKingMoves.size());
+        assertTrue(whiteKingMoves.contains(board.getSpotAt("d2")));
+        assertTrue(whiteKingMoves.contains(board.getSpotAt("f1")));
+        assertEquals(2, whiteKingMoves.size());
+
+        // adding a checkmate
+        Piece blackQueen = new Queen(false);
+        Piece whiteQueen = new Queen(true);
+        board.getSpotAt("d8").setPiece(whiteQueen);
+        board.getSpotAt("f2").setPiece(blackQueen);
+        board.addAllPieces(Arrays.asList(whiteQueen, blackQueen));
+        blackKingMoves = blackKing.getMoves(board);
+        whiteKingMoves = whiteKing.getMoves(board);
+
+        assertEquals(0, blackKingMoves.size());
+        assertEquals(0, whiteKingMoves.size());
     }
 }
