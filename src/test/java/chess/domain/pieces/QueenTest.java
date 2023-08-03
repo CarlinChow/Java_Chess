@@ -3,6 +3,7 @@ package chess.domain.pieces;
 import chess.domain.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import java.util.Set;
 
 public class QueenTest {
     private void setUp(Board board){
@@ -153,4 +154,99 @@ public class QueenTest {
         assertFalse(whiteQueen.canMove(board, board.getSpotAt(3,7)));
     }
 
+    @Test
+    public void testGetMoves(){
+        Board board = new Board();
+        this.setUp(board);
+        Piece blackQueen = board.getSpotAt("d8").getPiece();
+        Piece whiteQueen = board.getSpotAt("d1").getPiece();
+        Set<Spot> blackQueenMoves = blackQueen.getMoves(board);
+        Set<Spot> whiteQueenMoves = whiteQueen.getMoves(board);
+        // black queen
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("c8")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("b8")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("a8")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("c7")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("b6")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("a5")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("d7")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("d6")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("d5")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("d4")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("d3")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("d2")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("d1")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("e7")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("f6")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("g5")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("h4")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("e8")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("f8")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("g8")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("h8")));
+        assertEquals(21, blackQueenMoves.size());
+        // white queen
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("c1")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("b1")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("a1")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("c2")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("b3")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("a4")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("d2")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("d3")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("d4")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("d5")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("d6")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("d7")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("d8")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("e2")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("f3")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("g4")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("h5")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("e1")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("f1")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("g1")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("h1")));
+        assertEquals(21, whiteQueenMoves.size());
+
+        // adding interference
+        board.getSpotAt("b8").setPiece(new Pawn(false));
+        board.getSpotAt("a5").setPiece(new Pawn(false));
+        board.getSpotAt("d5").setPiece(new Pawn(false));
+        board.getSpotAt("f6").setPiece(new Pawn(true));
+        board.getSpotAt("g8").setPiece(new Pawn(true));
+        board.getSpotAt("a4").setPiece(new Pawn(true));
+        board.getSpotAt("b1").setPiece(new Pawn(true));
+        board.getSpotAt("d4").setPiece(new Pawn(true));
+        board.getSpotAt("f3").setPiece(new Pawn(false));
+        board.getSpotAt("g1").setPiece(new Pawn(false));
+
+        blackQueenMoves = blackQueen.getMoves(board);
+        whiteQueenMoves = whiteQueen.getMoves(board);
+
+        // black queen
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("c8")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("c7")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("b6")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("d7")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("d6")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("e7")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("f6")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("e8")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("f8")));
+        assertTrue(blackQueenMoves.contains(board.getSpotAt("g8")));
+        assertEquals(10, blackQueenMoves.size());
+        // white queen
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("c1")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("c2")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("b3")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("d2")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("d3")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("e2")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("f3")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("e1")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("f1")));
+        assertTrue(whiteQueenMoves.contains(board.getSpotAt("g1")));
+        assertEquals(10, whiteQueenMoves.size());
+    }
 }
