@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 import chess.domain.pieces.*;
+import static chess.types.Color.*;
 import static java.util.function.Predicate.not;
 
 public class Board {
@@ -25,44 +26,44 @@ public class Board {
     public void reset(){ // reset board to piece starting position
         this.clear();
         // black pawns
-        this.getSpotAt("a7").setPiece(new Pawn(false));
-        this.getSpotAt("b7").setPiece(new Pawn(false));
-        this.getSpotAt("c7").setPiece(new Pawn(false));
-        this.getSpotAt("d7").setPiece(new Pawn(false));
-        this.getSpotAt("e7").setPiece(new Pawn(false));
-        this.getSpotAt("f7").setPiece(new Pawn(false));
-        this.getSpotAt("g7").setPiece(new Pawn(false));
-        this.getSpotAt("h7").setPiece(new Pawn(false));
+        this.getSpotAt("a7").setPiece(new Pawn(BLACK));
+        this.getSpotAt("b7").setPiece(new Pawn(BLACK));
+        this.getSpotAt("c7").setPiece(new Pawn(BLACK));
+        this.getSpotAt("d7").setPiece(new Pawn(BLACK));
+        this.getSpotAt("e7").setPiece(new Pawn(BLACK));
+        this.getSpotAt("f7").setPiece(new Pawn(BLACK));
+        this.getSpotAt("g7").setPiece(new Pawn(BLACK));
+        this.getSpotAt("h7").setPiece(new Pawn(BLACK));
         // white pawns
-        this.getSpotAt("a2").setPiece(new Pawn(true));
-        this.getSpotAt("b2").setPiece(new Pawn(true));
-        this.getSpotAt("c2").setPiece(new Pawn(true));
-        this.getSpotAt("d2").setPiece(new Pawn(true));
-        this.getSpotAt("e2").setPiece(new Pawn(true));
-        this.getSpotAt("f2").setPiece(new Pawn(true));
-        this.getSpotAt("g2").setPiece(new Pawn(true));
-        this.getSpotAt("h2").setPiece(new Pawn(true));
+        this.getSpotAt("a2").setPiece(new Pawn(WHITE));
+        this.getSpotAt("b2").setPiece(new Pawn(WHITE));
+        this.getSpotAt("c2").setPiece(new Pawn(WHITE));
+        this.getSpotAt("d2").setPiece(new Pawn(WHITE));
+        this.getSpotAt("e2").setPiece(new Pawn(WHITE));
+        this.getSpotAt("f2").setPiece(new Pawn(WHITE));
+        this.getSpotAt("g2").setPiece(new Pawn(WHITE));
+        this.getSpotAt("h2").setPiece(new Pawn(WHITE));
         // kings
-        this.getSpotAt("e8").setPiece(new King(false));
-        this.getSpotAt("e1").setPiece(new King(true));
+        this.getSpotAt("e8").setPiece(new King(BLACK));
+        this.getSpotAt("e1").setPiece(new King(WHITE));
         // queens
-        this.getSpotAt("d8").setPiece(new Queen(false));
-        this.getSpotAt("d1").setPiece(new Queen(true));
+        this.getSpotAt("d8").setPiece(new Queen(BLACK));
+        this.getSpotAt("d1").setPiece(new Queen(WHITE));
         // bishops
-        this.getSpotAt("c8").setPiece(new Bishop(false));
-        this.getSpotAt("f8").setPiece(new Bishop(false));
-        this.getSpotAt("c1").setPiece(new Bishop(true));
-        this.getSpotAt("f1").setPiece(new Bishop(true));
+        this.getSpotAt("c8").setPiece(new Bishop(BLACK));
+        this.getSpotAt("f8").setPiece(new Bishop(BLACK));
+        this.getSpotAt("c1").setPiece(new Bishop(WHITE));
+        this.getSpotAt("f1").setPiece(new Bishop(WHITE));
         // knights
-        this.getSpotAt("b8").setPiece(new Knight(false));
-        this.getSpotAt("g8").setPiece(new Knight(false));
-        this.getSpotAt("b1").setPiece(new Knight(true));
-        this.getSpotAt("g1").setPiece(new Knight(true));
+        this.getSpotAt("b8").setPiece(new Knight(BLACK));
+        this.getSpotAt("g8").setPiece(new Knight(BLACK));
+        this.getSpotAt("b1").setPiece(new Knight(WHITE));
+        this.getSpotAt("g1").setPiece(new Knight(WHITE));
         // rooks
-        this.getSpotAt("a8").setPiece(new Rook(false));
-        this.getSpotAt("h8").setPiece(new Rook(false));
-        this.getSpotAt("a1").setPiece(new Rook(true));
-        this.getSpotAt("h1").setPiece(new Rook(true));
+        this.getSpotAt("a8").setPiece(new Rook(BLACK));
+        this.getSpotAt("h8").setPiece(new Rook(BLACK));
+        this.getSpotAt("a1").setPiece(new Rook(WHITE));
+        this.getSpotAt("h1").setPiece(new Rook(WHITE));
 
         for(int i = 0; i < 2; i++){
             for(int j = 0; j < 8; j++){
@@ -86,7 +87,7 @@ public class Board {
     }
 
     public Spot getSpotAt(String chessCoordinates){
-        String coordinates = Spot.getMatrixCoordinates(chessCoordinates);
+        String coordinates = Spot.convertToMatrixCoordinates(chessCoordinates);
         int row = Character.getNumericValue(coordinates.charAt(0));
         int column =  Character.getNumericValue(coordinates.charAt(1));
         return this.getSpotAt(row, column);

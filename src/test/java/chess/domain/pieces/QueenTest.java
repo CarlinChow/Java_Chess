@@ -2,6 +2,8 @@ package chess.domain.pieces;
 
 import chess.domain.*;
 import org.junit.Test;
+
+import static chess.types.Color.*;
 import static org.junit.Assert.*;
 import java.util.Set;
 
@@ -9,8 +11,8 @@ public class QueenTest {
     private void setUp(Board board){
         // set up queens in default position on an empty board
         board.clear();
-        Piece whiteQueen = new Queen(true);
-        Piece blackQueen = new Queen(false);
+        Piece whiteQueen = new Queen(WHITE);
+        Piece blackQueen = new Queen(BLACK);
         board.getSpotAt(0,3).setPiece(blackQueen);
         board.getSpotAt(7,3).setPiece(whiteQueen);
     }
@@ -23,8 +25,8 @@ public class QueenTest {
         Piece blackQueen = board.getSpotAt(0,3).getPiece();
 
         // blackQueen diagonal moves & capture
-        board.getSpotAt(3,0).setPiece(new Pawn(true));
-        board.getSpotAt(4,7).setPiece(new Pawn(true));
+        board.getSpotAt(3,0).setPiece(new Pawn(WHITE));
+        board.getSpotAt(4,7).setPiece(new Pawn(WHITE));
         for(int i = 1; i < 4; i++){
             int newRow = blackQueen.getSpot().getRow() + i;
             int newCol = blackQueen.getSpot().getColumn() - i;
@@ -38,14 +40,14 @@ public class QueenTest {
         board.getSpotAt(3,0).removePiece();
         board.getSpotAt(4,7).removePiece();
         // blackQueen left moves & capture
-        board.getSpotAt(0,0).setPiece(new Pawn(true));
+        board.getSpotAt(0,0).setPiece(new Pawn(WHITE));
         for(int i = 1; i < 4; i++){
             int newCol = blackQueen.getSpot().getColumn() - i;
             assertTrue(blackQueen.canMove(board, board.getSpotAt(0,newCol)));
         }
         board.getSpotAt(3,0).removePiece();
         // blackQueen right moves
-        board.getSpotAt(0,7).setPiece(new Pawn(true));
+        board.getSpotAt(0,7).setPiece(new Pawn(WHITE));
         for(int i = 1; i < 5; i++){
             int newCol = blackQueen.getSpot().getColumn() + i;
             assertTrue(blackQueen.canMove(board, board.getSpotAt(0,newCol)));
@@ -58,8 +60,8 @@ public class QueenTest {
         }
 
         // whiteQueen diagonal moves & capture
-        board.getSpotAt(4,0).setPiece(new Pawn(false));
-        board.getSpotAt(3,7).setPiece(new Pawn(false));
+        board.getSpotAt(4,0).setPiece(new Pawn(BLACK));
+        board.getSpotAt(3,7).setPiece(new Pawn(BLACK));
         for(int i = 1; i < 4; i++){
             int newRow = whiteQueen.getSpot().getRow() - i;
             int newCol = whiteQueen.getSpot().getColumn() - i;
@@ -73,14 +75,14 @@ public class QueenTest {
         board.getSpotAt(4,0).removePiece();
         board.getSpotAt(3,7).removePiece();
         // whiteQueen left moves & capture
-        board.getSpotAt(7,0).setPiece(new Pawn(false));
+        board.getSpotAt(7,0).setPiece(new Pawn(BLACK));
         for(int i = 1; i < 4; i++){
             int newCol = whiteQueen.getSpot().getColumn() - i;
             assertTrue(whiteQueen.canMove(board, board.getSpotAt(7,newCol)));
         }
         board.getSpotAt(7,0).removePiece();
         // blackQueen right moves
-        board.getSpotAt(7,7).setPiece(new Pawn(false));
+        board.getSpotAt(7,7).setPiece(new Pawn(BLACK));
         for(int i = 1; i < 5; i++){
             int newCol = whiteQueen.getSpot().getColumn() + i;
             assertTrue(whiteQueen.canMove(board, board.getSpotAt(7,newCol)));
@@ -110,14 +112,14 @@ public class QueenTest {
         assertFalse(blackQueen.canMove(board, board.getSpotAt(1,5)));
 
         // illegal capture friendly piece
-        board.getSpotAt(0,0).setPiece(new Pawn(false));
-        board.getSpotAt(0,7).setPiece(new Pawn(false));
-        board.getSpotAt(3,0).setPiece(new Pawn(false));
-        board.getSpotAt(4,7).setPiece(new Pawn(false));
-        board.getSpotAt(7,0).setPiece(new Pawn(true));
-        board.getSpotAt(7,7).setPiece(new Pawn(true));
-        board.getSpotAt(4,0).setPiece(new Pawn(true));
-        board.getSpotAt(3,7).setPiece(new Pawn(true));
+        board.getSpotAt(0,0).setPiece(new Pawn(BLACK));
+        board.getSpotAt(0,7).setPiece(new Pawn(BLACK));
+        board.getSpotAt(3,0).setPiece(new Pawn(BLACK));
+        board.getSpotAt(4,7).setPiece(new Pawn(BLACK));
+        board.getSpotAt(7,0).setPiece(new Pawn(WHITE));
+        board.getSpotAt(7,7).setPiece(new Pawn(WHITE));
+        board.getSpotAt(4,0).setPiece(new Pawn(WHITE));
+        board.getSpotAt(3,7).setPiece(new Pawn(WHITE));
         assertFalse(blackQueen.canMove(board, board.getSpotAt(0,0)));
         assertFalse(blackQueen.canMove(board, board.getSpotAt(0,7)));
         assertFalse(blackQueen.canMove(board, board.getSpotAt(3,0)));
@@ -136,14 +138,14 @@ public class QueenTest {
         board.getSpotAt(3,7).removePiece();
 
         // movement with interference
-        board.getSpotAt(0,1).setPiece(new Pawn(false));
-        board.getSpotAt(0,6).setPiece(new Pawn(true));
-        board.getSpotAt(2,1).setPiece(new Pawn(false));
-        board.getSpotAt(3,6).setPiece(new Pawn(true));
-        board.getSpotAt(7,1).setPiece(new Pawn(false));
-        board.getSpotAt(7,6).setPiece(new Pawn(true));
-        board.getSpotAt(5,1).setPiece(new Pawn(false));
-        board.getSpotAt(4,6).setPiece(new Pawn(true));
+        board.getSpotAt(0,1).setPiece(new Pawn(BLACK));
+        board.getSpotAt(0,6).setPiece(new Pawn(WHITE));
+        board.getSpotAt(2,1).setPiece(new Pawn(BLACK));
+        board.getSpotAt(3,6).setPiece(new Pawn(WHITE));
+        board.getSpotAt(7,1).setPiece(new Pawn(BLACK));
+        board.getSpotAt(7,6).setPiece(new Pawn(WHITE));
+        board.getSpotAt(5,1).setPiece(new Pawn(BLACK));
+        board.getSpotAt(4,6).setPiece(new Pawn(WHITE));
         assertFalse(blackQueen.canMove(board, board.getSpotAt(0,0)));
         assertFalse(blackQueen.canMove(board, board.getSpotAt(0,7)));
         assertFalse(blackQueen.canMove(board, board.getSpotAt(3,0)));
@@ -210,16 +212,16 @@ public class QueenTest {
         assertEquals(21, whiteQueenMoves.size());
 
         // adding interference
-        board.getSpotAt("b8").setPiece(new Pawn(false));
-        board.getSpotAt("a5").setPiece(new Pawn(false));
-        board.getSpotAt("d5").setPiece(new Pawn(false));
-        board.getSpotAt("f6").setPiece(new Pawn(true));
-        board.getSpotAt("g8").setPiece(new Pawn(true));
-        board.getSpotAt("a4").setPiece(new Pawn(true));
-        board.getSpotAt("b1").setPiece(new Pawn(true));
-        board.getSpotAt("d4").setPiece(new Pawn(true));
-        board.getSpotAt("f3").setPiece(new Pawn(false));
-        board.getSpotAt("g1").setPiece(new Pawn(false));
+        board.getSpotAt("b8").setPiece(new Pawn(BLACK));
+        board.getSpotAt("a5").setPiece(new Pawn(BLACK));
+        board.getSpotAt("d5").setPiece(new Pawn(BLACK));
+        board.getSpotAt("f6").setPiece(new Pawn(WHITE));
+        board.getSpotAt("g8").setPiece(new Pawn(WHITE));
+        board.getSpotAt("a4").setPiece(new Pawn(WHITE));
+        board.getSpotAt("b1").setPiece(new Pawn(WHITE));
+        board.getSpotAt("d4").setPiece(new Pawn(WHITE));
+        board.getSpotAt("f3").setPiece(new Pawn(BLACK));
+        board.getSpotAt("g1").setPiece(new Pawn(BLACK));
 
         blackQueenMoves = blackQueen.getMoves(board);
         whiteQueenMoves = whiteQueen.getMoves(board);

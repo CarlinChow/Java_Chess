@@ -1,6 +1,7 @@
 package chess.domain.pieces;
 
 import chess.domain.*;
+import static chess.types.Color.*;
 import org.junit.Test;
 import java.util.Set;
 
@@ -9,10 +10,10 @@ import static org.junit.Assert.*;
 public class KnightTest {
     private void setUp(Board board){
         board.clear();
-        board.getSpotAt("b8").setPiece(new Knight(false));
-        board.getSpotAt("g8").setPiece(new Knight(false));
-        board.getSpotAt("b1").setPiece(new Knight(true));
-        board.getSpotAt("g1").setPiece(new Knight(true));
+        board.getSpotAt("b8").setPiece(new Knight(BLACK));
+        board.getSpotAt("g8").setPiece(new Knight(BLACK));
+        board.getSpotAt("b1").setPiece(new Knight(WHITE));
+        board.getSpotAt("g1").setPiece(new Knight(WHITE));
     }
 
     @Test
@@ -41,20 +42,20 @@ public class KnightTest {
         assertTrue(whiteKnight2.canMove(board, board.getSpotAt("e2")));
 
         // black knight legal capture
-        board.getSpotAt("a6").setPiece(new Pawn(true));
-        board.getSpotAt("d7").setPiece(new Pawn(true));
-        board.getSpotAt("e7").setPiece(new Pawn(true));
-        board.getSpotAt("h6").setPiece(new Pawn(true));
+        board.getSpotAt("a6").setPiece(new Pawn(WHITE));
+        board.getSpotAt("d7").setPiece(new Pawn(WHITE));
+        board.getSpotAt("e7").setPiece(new Pawn(WHITE));
+        board.getSpotAt("h6").setPiece(new Pawn(WHITE));
         assertTrue(blackKnight1.canMove(board, board.getSpotAt("a6")));
         assertTrue(blackKnight1.canMove(board, board.getSpotAt("d7")));
         assertTrue(blackKnight2.canMove(board, board.getSpotAt("e7")));
         assertTrue(blackKnight2.canMove(board, board.getSpotAt("h6")));
 
         // white knight legal capture
-        board.getSpotAt("a3").setPiece(new Pawn(false));
-        board.getSpotAt("d2").setPiece(new Pawn(false));
-        board.getSpotAt("f3").setPiece(new Pawn(false));
-        board.getSpotAt("e2").setPiece(new Pawn(false));
+        board.getSpotAt("a3").setPiece(new Pawn(BLACK));
+        board.getSpotAt("d2").setPiece(new Pawn(BLACK));
+        board.getSpotAt("f3").setPiece(new Pawn(BLACK));
+        board.getSpotAt("e2").setPiece(new Pawn(BLACK));
         assertTrue(whiteKnight1.canMove(board, board.getSpotAt("a3")));
         assertTrue(whiteKnight1.canMove(board, board.getSpotAt("d2")));
         assertTrue(whiteKnight2.canMove(board, board.getSpotAt("f3")));
@@ -71,20 +72,20 @@ public class KnightTest {
         Piece whiteKnight2 = board.getSpotAt("g1").getPiece();
 
         // black knights illegal friendly capture
-        board.getSpotAt("a6").setPiece(new Pawn(false));
-        board.getSpotAt("d7").setPiece(new Pawn(false));
-        board.getSpotAt("e7").setPiece(new Pawn(false));
-        board.getSpotAt("h6").setPiece(new Pawn(false));
+        board.getSpotAt("a6").setPiece(new Pawn(BLACK));
+        board.getSpotAt("d7").setPiece(new Pawn(BLACK));
+        board.getSpotAt("e7").setPiece(new Pawn(BLACK));
+        board.getSpotAt("h6").setPiece(new Pawn(BLACK));
         assertFalse(blackKnight1.canMove(board, board.getSpotAt("a6")));
         assertFalse(blackKnight1.canMove(board, board.getSpotAt("d7")));
         assertFalse(blackKnight2.canMove(board, board.getSpotAt("e7")));
         assertFalse(blackKnight2.canMove(board, board.getSpotAt("h6")));
 
         // white knights illegal friendly capture
-        board.getSpotAt("a3").setPiece(new Pawn(true));
-        board.getSpotAt("d2").setPiece(new Pawn(true));
-        board.getSpotAt("f3").setPiece(new Pawn(true));
-        board.getSpotAt("e2").setPiece(new Pawn(true));
+        board.getSpotAt("a3").setPiece(new Pawn(WHITE));
+        board.getSpotAt("d2").setPiece(new Pawn(WHITE));
+        board.getSpotAt("f3").setPiece(new Pawn(WHITE));
+        board.getSpotAt("e2").setPiece(new Pawn(WHITE));
         assertFalse(whiteKnight1.canMove(board, board.getSpotAt("a3")));
         assertFalse(whiteKnight1.canMove(board, board.getSpotAt("d2")));
         assertFalse(whiteKnight2.canMove(board, board.getSpotAt("f3")));
@@ -123,14 +124,14 @@ public class KnightTest {
         assertEquals(3, whiteKingKnightMoves.size());
 
         // adding interference
-        board.getSpotAt("d7").setPiece(new Pawn(false));
-        board.getSpotAt("e7").setPiece(new Pawn(false));
-        board.getSpotAt("a6").setPiece(new Pawn(true));
-        board.getSpotAt("f6").setPiece(new Pawn(true));
-        board.getSpotAt("d2").setPiece(new Pawn(true));
-        board.getSpotAt("e2").setPiece(new Pawn(true));
-        board.getSpotAt("a3").setPiece(new Pawn(false));
-        board.getSpotAt("f3").setPiece(new Pawn(false));
+        board.getSpotAt("d7").setPiece(new Pawn(BLACK));
+        board.getSpotAt("e7").setPiece(new Pawn(BLACK));
+        board.getSpotAt("a6").setPiece(new Pawn(WHITE));
+        board.getSpotAt("f6").setPiece(new Pawn(WHITE));
+        board.getSpotAt("d2").setPiece(new Pawn(WHITE));
+        board.getSpotAt("e2").setPiece(new Pawn(WHITE));
+        board.getSpotAt("a3").setPiece(new Pawn(BLACK));
+        board.getSpotAt("f3").setPiece(new Pawn(BLACK));
 
         blackQueenKnightMoves = blackQueenKnight.getMoves(board);
         blackKingKnightMoves = blackKingKnight.getMoves(board);

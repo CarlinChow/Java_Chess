@@ -2,14 +2,15 @@ package chess.domain;
 
 import java.util.UUID;
 import java.util.Set;
+import chess.types.Color;
 public abstract class Piece {
     private final String id;
     private Spot spot;
-    private final boolean white;
+    private final Color color;
     private boolean captured;
 
-    public Piece(boolean white){
-        this.white = white;
+    public Piece(Color color){
+        this.color = color;
         this.id = UUID.randomUUID().toString();
         this.captured = false;
     }
@@ -38,8 +39,8 @@ public abstract class Piece {
 
     public abstract Set<Spot> getMoves(Board board);
 
-    public boolean isWhite(){
-        return this.white;
+    public Color getColor(){
+        return this.color;
     }
 
     public boolean isCaptured(){

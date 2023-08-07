@@ -2,6 +2,8 @@ package chess.domain.pieces;
 
 import chess.logic.*;
 import org.junit.Test;
+
+import static chess.types.Color.*;
 import static org.junit.Assert.*;
 import chess.domain.*;
 import java.util.Arrays;
@@ -10,8 +12,8 @@ import java.util.Set;
 public class KingTest {
     private void setUp(Board board){
         board.clear();
-        Piece blackKing = new King(false);
-        Piece whiteKing = new King(true);
+        Piece blackKing = new King(BLACK);
+        Piece whiteKing = new King(WHITE);
         board.getSpotAt("e8").setPiece(blackKing);
         board.getSpotAt("e1").setPiece(whiteKing);
         board.addPiece(blackKing);
@@ -47,11 +49,11 @@ public class KingTest {
         Piece whiteKing = board.getSpotAt("e1").getPiece();
 
         // black king
-        Piece pawn1 = new Pawn(true);
-        Piece pawn2 = new Pawn(true);
-        Piece pawn3 = new Pawn(true);
-        Piece pawn4 = new Pawn(true);
-        Piece pawn5 = new Pawn(true);
+        Piece pawn1 = new Pawn(WHITE);
+        Piece pawn2 = new Pawn(WHITE);
+        Piece pawn3 = new Pawn(WHITE);
+        Piece pawn4 = new Pawn(WHITE);
+        Piece pawn5 = new Pawn(WHITE);
         board.getSpotAt("d8").setPiece(pawn1);
         board.getSpotAt("f8").setPiece(pawn2);
         board.getSpotAt("d7").setPiece(pawn3);
@@ -65,11 +67,11 @@ public class KingTest {
         assertFalse(blackKing.canMove(board, "f8"));
 
         // white king
-        pawn1 = new Pawn(false);
-        pawn2 = new Pawn(false);
-        pawn3 = new Pawn(false);
-        pawn4 = new Pawn(false);
-        pawn5 = new Pawn(false);
+        pawn1 = new Pawn(BLACK);
+        pawn2 = new Pawn(BLACK);
+        pawn3 = new Pawn(BLACK);
+        pawn4 = new Pawn(BLACK);
+        pawn5 = new Pawn(BLACK);
         board.getSpotAt("d2").setPiece(pawn1);
         board.getSpotAt("e2").setPiece(pawn2);
         board.getSpotAt("f2").setPiece(pawn3);
@@ -91,11 +93,11 @@ public class KingTest {
         Piece whiteKing = board.getSpotAt("e1").getPiece();
 
         // black king
-        Piece pawn1 = new Pawn(false);
-        Piece pawn2 = new Pawn(false);
-        Piece pawn3 = new Pawn(false);
-        Piece pawn4 = new Pawn(false);
-        Piece pawn5 = new Pawn(false);
+        Piece pawn1 = new Pawn(BLACK);
+        Piece pawn2 = new Pawn(BLACK);
+        Piece pawn3 = new Pawn(BLACK);
+        Piece pawn4 = new Pawn(BLACK);
+        Piece pawn5 = new Pawn(BLACK);
         board.getSpotAt("d8").setPiece(pawn1);
         board.getSpotAt("f8").setPiece(pawn2);
         board.getSpotAt("d7").setPiece(pawn3);
@@ -109,11 +111,11 @@ public class KingTest {
         assertFalse(blackKing.canMove(board, "f8"));
 
         // white king
-        pawn1 = new Pawn(true);
-        pawn2 = new Pawn(true);
-        pawn3 = new Pawn(true);
-        pawn4 = new Pawn(true);
-        pawn5 = new Pawn(true);
+        pawn1 = new Pawn(WHITE);
+        pawn2 = new Pawn(WHITE);
+        pawn3 = new Pawn(WHITE);
+        pawn4 = new Pawn(WHITE);
+        pawn5 = new Pawn(WHITE);
         board.getSpotAt("e2").setPiece(pawn1);
         board.getSpotAt("d2").setPiece(pawn2);
         board.getSpotAt("f2").setPiece(pawn3);
@@ -158,8 +160,8 @@ public class KingTest {
         Piece blackKing = board.getSpotAt("e8").getPiece();
         Piece whiteKing = board.getSpotAt("e1").getPiece();
 
-        Piece rook1 = new Rook(true);
-        Piece rook2 = new Rook(true);
+        Piece rook1 = new Rook(WHITE);
+        Piece rook2 = new Rook(WHITE);
         board.addAllPieces(Arrays.asList(rook1,rook2));
         board.getSpotAt("d1").setPiece(rook1);
         board.getSpotAt("f1").setPiece(rook2);
@@ -180,7 +182,7 @@ public class KingTest {
         assertTrue(blackKing.canMove(board, "d8"));
         assertTrue(blackKing.canMove(board, "f8"));
 
-        Piece pawn1 = new Pawn(true);
+        Piece pawn1 = new Pawn(WHITE);
         board.addPiece(pawn1);
         board.getSpotAt("e7").setPiece(pawn1);
 
@@ -190,7 +192,7 @@ public class KingTest {
         assertTrue(blackKing.canMove(board, "d7"));
         assertTrue(blackKing.canMove(board, "f7"));
 
-        Piece pawn2 = new Pawn(true);
+        Piece pawn2 = new Pawn(WHITE);
         board.addPiece(pawn2);
         board.getSpotAt("e6").setPiece(pawn2);
         assertFalse(blackKing.canMove(board, "d8"));
@@ -199,7 +201,7 @@ public class KingTest {
         assertFalse(blackKing.canMove(board, "d7"));
         assertFalse(blackKing.canMove(board, "f7"));
 
-        Piece rook3 = new Rook(true);
+        Piece rook3 = new Rook(WHITE);
         board.getSpotAt("a7").setPiece(rook3);
         board.addPiece(rook3);
         assertFalse(blackKing.canMove(board, "e7"));
@@ -208,9 +210,9 @@ public class KingTest {
         pawn2.setCaptured(true);
         assertTrue(blackKing.canMove(board, "f7"));
 
-        Piece queen = new Queen(false);
-        Piece knight = new Knight(false);
-        Piece bishop = new Bishop(false);
+        Piece queen = new Queen(BLACK);
+        Piece knight = new Knight(BLACK);
+        Piece bishop = new Bishop(BLACK);
         board.getSpotAt("c2").setPiece(queen);
         board.getSpotAt("g3").setPiece(knight);
         board.getSpotAt("f2").setPiece(bishop);
@@ -243,10 +245,10 @@ public class KingTest {
         assertFalse(whiteKing.canCastle(board, "c1", moveList));
         assertFalse(whiteKing.canCastle(board, "g1", moveList));
 
-        Piece blackQueenSideRook = new Rook(false);
-        Piece blackKingSideRook = new Rook(false);
-        Piece whiteQueenSideRook = new Rook(true);
-        Piece whiteKingSideRook = new Rook(true);
+        Piece blackQueenSideRook = new Rook(BLACK);
+        Piece blackKingSideRook = new Rook(BLACK);
+        Piece whiteQueenSideRook = new Rook(WHITE);
+        Piece whiteKingSideRook = new Rook(WHITE);
         board.getSpotAt("a8").setPiece(blackQueenSideRook);
         board.getSpotAt("h8").setPiece(blackKingSideRook);
         board.getSpotAt("a1").setPiece(whiteQueenSideRook);
@@ -357,10 +359,10 @@ public class KingTest {
         assertEquals(5, whiteKingMoves.size());
 
         // adding interference
-        Piece whitePawn = new Pawn(true);
-        Piece blackPawn = new Pawn(false);
-        Piece whiteKnight = new Knight(true);
-        Piece blackKnight = new Knight(false);
+        Piece whitePawn = new Pawn(WHITE);
+        Piece blackPawn = new Pawn(BLACK);
+        Piece whiteKnight = new Knight(WHITE);
+        Piece blackKnight = new Knight(BLACK);
         board.getSpotAt("g6").setPiece(whitePawn);
         board.getSpotAt("g3").setPiece(blackPawn);
         board.getSpotAt("c6").setPiece(whiteKnight);
@@ -377,8 +379,8 @@ public class KingTest {
         assertEquals(2, whiteKingMoves.size());
 
         // adding a checkmate
-        Piece blackQueen = new Queen(false);
-        Piece whiteQueen = new Queen(true);
+        Piece blackQueen = new Queen(BLACK);
+        Piece whiteQueen = new Queen(WHITE);
         board.getSpotAt("d8").setPiece(whiteQueen);
         board.getSpotAt("f2").setPiece(blackQueen);
         board.addAllPieces(Arrays.asList(whiteQueen, blackQueen));

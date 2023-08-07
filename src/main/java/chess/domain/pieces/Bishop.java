@@ -5,10 +5,11 @@ import static java.lang.Math.abs;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.stream.Collectors;
+import chess.types.Color;
 
 public class Bishop extends Piece{
-    public Bishop(boolean white){
-        super(white);
+    public Bishop(Color color){
+        super(color);
     }
 
     @Override
@@ -39,7 +40,7 @@ public class Bishop extends Piece{
                     }
                 }
             }
-            return end.isEmpty() || end.getPiece().isWhite() != this.isWhite();
+            return end.isEmpty() || end.getPiece().getColor() != this.getColor();
         }else{
             if(verticalMovement < 0){
                 // diagonal movement down & left
@@ -56,7 +57,7 @@ public class Bishop extends Piece{
                     }
                 }
             }
-            return end.isEmpty() || end.getPiece().isWhite() != this.isWhite();
+            return end.isEmpty() || end.getPiece().getColor() != this.getColor();
         }
     }
 
@@ -90,6 +91,6 @@ public class Bishop extends Piece{
 
     @Override
     public String toString(){
-        return isWhite() ? "\u2657" : "\u265D";
+        return this.getColor() == Color.WHITE ? "\u2657" : "\u265D";
     }
 }

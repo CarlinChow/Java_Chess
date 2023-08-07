@@ -1,6 +1,8 @@
 package chess.domain.pieces;
 
 import org.junit.Test;
+
+import static chess.types.Color.*;
 import static org.junit.Assert.*;
 import chess.domain.*;
 import java.util.Set;
@@ -8,10 +10,10 @@ import java.util.Set;
 public class RookTest {
     private void setUp(Board board){
         board.clear();
-        Piece blackRook1 = new Rook(false);
-        Piece blackRook2 = new Rook(false);
-        Piece whiteRook1 = new Rook(true);
-        Piece whiteRook2 = new Rook(true);
+        Piece blackRook1 = new Rook(BLACK);
+        Piece blackRook2 = new Rook(BLACK);
+        Piece whiteRook1 = new Rook(WHITE);
+        Piece whiteRook2 = new Rook(WHITE);
         board.getSpotAt(0,0).setPiece(blackRook1);
         board.getSpotAt(0,7).setPiece(blackRook2);
         board.getSpotAt(7,0).setPiece(whiteRook1);
@@ -71,10 +73,10 @@ public class RookTest {
         assertFalse(whiteRook2.canMove(board, board.getSpotAt(7,0)));
 
         // movement with interference
-        board.getSpotAt(0,3).setPiece(new Pawn(true));
-        board.getSpotAt(5,0).setPiece(new Pawn(false));
-        board.getSpotAt(7,4).setPiece(new Pawn(false));
-        board.getSpotAt(5,7).setPiece(new Pawn(true));
+        board.getSpotAt(0,3).setPiece(new Pawn(WHITE));
+        board.getSpotAt(5,0).setPiece(new Pawn(BLACK));
+        board.getSpotAt(7,4).setPiece(new Pawn(BLACK));
+        board.getSpotAt(5,7).setPiece(new Pawn(WHITE));
         assertFalse(blackRook1.canMove(board, board.getSpotAt(0,5)));
         assertFalse(blackRook1.canMove(board, board.getSpotAt(6,0)));
         assertFalse(blackRook2.canMove(board, board.getSpotAt(6,7)));
@@ -166,14 +168,14 @@ public class RookTest {
         assertEquals(13, whiteKingRookMoves.size());
 
         // adding interference
-        board.getSpotAt("a6").setPiece(new Knight(true));
-        board.getSpotAt("c8").setPiece(new Knight(false));
-        board.getSpotAt("f8").setPiece(new Knight(true));
-        board.getSpotAt("h6").setPiece(new Knight(false));
-        board.getSpotAt("a3").setPiece(new Knight(true));
-        board.getSpotAt("c1").setPiece(new Knight(false));
-        board.getSpotAt("f1").setPiece(new Knight(true));
-        board.getSpotAt("h3").setPiece(new Knight(false));
+        board.getSpotAt("a6").setPiece(new Knight(WHITE));
+        board.getSpotAt("c8").setPiece(new Knight(BLACK));
+        board.getSpotAt("f8").setPiece(new Knight(WHITE));
+        board.getSpotAt("h6").setPiece(new Knight(BLACK));
+        board.getSpotAt("a3").setPiece(new Knight(WHITE));
+        board.getSpotAt("c1").setPiece(new Knight(BLACK));
+        board.getSpotAt("f1").setPiece(new Knight(WHITE));
+        board.getSpotAt("h3").setPiece(new Knight(BLACK));
 
         blackQueenRookMoves = blackQueenRook.getMoves(board);
         blackKingRookMoves = blackKingRook.getMoves(board);

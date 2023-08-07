@@ -1,14 +1,15 @@
 package chess.domain.pieces;
 
 import chess.domain.*;
+import chess.types.Color;
 import static java.lang.Math.abs;
 import java.util.Set;
 import java.util.HashSet;
 
 public class Pawn extends Piece{
 
-    public Pawn(boolean white){
-        super(white);
+    public Pawn(Color color){
+        super(color);
     }
 
     @Override
@@ -23,15 +24,15 @@ public class Pawn extends Piece{
             // check if piece is making an illegal move,
             return false;
         }
-        if((this.isWhite() && verticalMovement < 0) || (!this.isWhite() && verticalMovement > 0)){
+        if((this.getColor() == Color.WHITE && verticalMovement < 0) || (this.getColor() == Color.BLACK && verticalMovement > 0)){
             // check if piece is moving backwards
             return false;
         }
 
-        int startingRow = this.isWhite() ? 6 : 1;
+        int startingRow = this.getColor() == Color.WHITE ? 6 : 1;
         if(abs(verticalMovement) == 2 && start.getRow() == startingRow){
             // handle moving forward twice
-            int diff = this.isWhite() ? -1 : 1;
+            int diff = this.getColor() == Color.WHITE ? -1 : 1;
             // check if spots in front are empty
             Spot spot = board.getSpotAt(start.getRow() + diff, start.getColumn());
             return spot.isEmpty() && end.isEmpty();
@@ -41,7 +42,7 @@ public class Pawn extends Piece{
         }
         // check if attack is legal
         if(abs(verticalMovement) == 1 && abs(horizontalMovement) == 1){
-            return !end.isEmpty() && end.getPiece().isWhite() != this.isWhite();
+            return !end.isEmpty() && end.getPiece().getColor() != this.getColor();
         }
         return false;
     }
@@ -50,9 +51,9 @@ public class Pawn extends Piece{
     public boolean canCapture(Board board, Spot start, Spot end){
         int verticalMovement = start.getRow() - end.getRow();
         int horizontalMovement = start.getColumn() - end.getColumn();
-        int direction = this.isWhite() ? 1 : -1;
+        int direction = this.getColor() == Color.WHITE ? 1 : -1;
         if(abs(horizontalMovement) == 1 && verticalMovement == direction){
-            return !end.isEmpty() && end.getPiece().isWhite() != this.isWhite();
+            return !end.isEmpty() && end.getPiece().getColor() != this.getColor();
         }
         return false;
     }
@@ -61,7 +62,7 @@ public class Pawn extends Piece{
     public Set<Spot> getMoves(Board board){
         Set<Spot> moves = new HashSet<>();
         Spot currSpot = this.getSpot();
-        int forwardDirection = this.isWhite() ? -1 : 1;
+        int forwardDirection = this.getColor() == Color.WHITE ? -1 : 1;
         // move forward
         Spot forwardSpot = board.getSpotAt(currSpot.getRow() + forwardDirection, currSpot.getColumn());
         if(this.canMove(board, forwardSpot)){
@@ -70,14 +71,14 @@ public class Pawn extends Piece{
         // capture left
         if(currSpot.getColumn() > 0){
             Spot captureLeftSpot = board.getSpotAt(currSpot.getRow() + forwardDirection, currSpot.getColumn() - 1);
-            if(!captureLeftSpot.isEmpty() && captureLeftSpot.getPiece().isWhite() != this.isWhite()){
+            if(!captureLeftSpot.isEmpty() && captureLeftSpot.getPiece().getColor() != this.getColor()){
                 moves.add(captureLeftSpot);
             }
         }
         // capture right
         if(currSpot.getColumn() < 7){
             Spot captureRightSpot = board.getSpotAt(currSpot.getRow() + forwardDirection, currSpot.getColumn() + 1);
-            if(!captureRightSpot.isEmpty() && captureRightSpot.getPiece().isWhite() != this.isWhite()){
+            if(!captureRightSpot.isEmpty() && captureRightSpot.getPiece().getColor() != this.getColor()){
                 moves.add(captureRightSpot);
             }
         }
@@ -86,6 +87,6 @@ public class Pawn extends Piece{
 
     @Override
     public String toString(){
-        return isWhite() ? "\u2659" : "\u265F";
+        return this.getColor() == Color.WHITE ? "\u2659" : "\u265F";
     }
 }

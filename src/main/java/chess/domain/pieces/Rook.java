@@ -1,15 +1,14 @@
 package chess.domain.pieces;
 
-import chess.domain.Piece;
-import chess.domain.Board;
-import chess.domain.Spot;
+import chess.domain.*;
+import chess.types.Color;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Rook extends Piece {
-    public Rook(boolean white){
-        super(white);
+    public Rook(Color color){
+        super(color);
     }
 
     @Override
@@ -38,7 +37,7 @@ public class Rook extends Piece {
                     }
                 }
             }
-            return end.isEmpty() || end.getPiece().isWhite() != this.isWhite();
+            return end.isEmpty() || end.getPiece().getColor() != this.getColor();
         }
         if (horizontalMovement == 0) {
             int startRow = start.getRow();
@@ -57,7 +56,7 @@ public class Rook extends Piece {
                     }
                 }
             }
-            return end.isEmpty() || end.getPiece().isWhite() != this.isWhite();
+            return end.isEmpty() || end.getPiece().getColor() != this.getColor();
         }
         return false;
     }
@@ -92,7 +91,7 @@ public class Rook extends Piece {
 
     @Override
     public String toString(){
-        return isWhite() ? "\u2656" : "\u265C";
+        return this.getColor() == Color.WHITE ? "\u2656" : "\u265C";
     }
 }
 

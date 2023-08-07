@@ -1,6 +1,7 @@
 package chess.domain.pieces;
 
 import chess.domain.*;
+import chess.types.Color;
 import static java.lang.Math.abs;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,8 +10,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Knight extends Piece{
-    public Knight(boolean white){
-        super(white);
+    public Knight(Color color){
+        super(color);
     }
 
     @Override
@@ -18,7 +19,7 @@ public class Knight extends Piece{
         int verticalMovement = start.getRow() - end.getRow();
         int horizontalMovement = start.getColumn() - end.getColumn();
         if(abs(verticalMovement * horizontalMovement) == 2){
-            return end.isEmpty() || end.getPiece().isWhite() != this.isWhite();
+            return end.isEmpty() || end.getPiece().getColor() != this.getColor();
         }
         return false;
     }
@@ -55,6 +56,6 @@ public class Knight extends Piece{
 
     @Override
     public String toString(){
-        return isWhite() ? "\u2658" : "\u265E";
+        return this.getColor() == Color.WHITE ? "\u2658" : "\u265E";
     }
 }
