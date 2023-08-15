@@ -170,6 +170,14 @@ public class Board {
                 .collect(Collectors.toSet());
     }
 
+    public Set<King> getKingPieces(){
+        return this.pieces
+                .stream()
+                .filter(King.class::isInstance)
+                .map(King.class::cast)
+                .collect(Collectors.toSet());
+    }
+
     public void addPiece(Piece piece){
         if(piece == null){
             throw new IllegalArgumentException("Piece parameter cannot be null");
