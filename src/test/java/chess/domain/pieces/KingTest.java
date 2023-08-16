@@ -7,6 +7,7 @@ import static chess.types.Color.*;
 import static org.junit.Assert.*;
 import chess.domain.*;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Set;
 
 public class KingTest {
@@ -334,6 +335,29 @@ public class KingTest {
         assertTrue(blackKing.canCastle(board, "g8", moveList));
         assertTrue(whiteKing.canCastle(board, "c1", moveList));
         assertTrue(whiteKing.canCastle(board, "g1", moveList));
+
+        // castling which results in check
+        board.clear();
+        moveList.getAllMoves().clear();
+        blackKing = new King(BLACK);
+        Piece blackRook1 = new Rook(BLACK);
+        Piece blackRook2 = new Rook(BLACK);
+        Piece whiteKnight = new Knight(WHITE);
+        Piece whiteBishop = new Bishop(WHITE);
+        board.addAllPieces(Arrays.asList(blackRook1, blackKing, whiteKnight, whiteBishop));
+        board.getSpotAt("e8").setPiece(blackKing);
+        board.getSpotAt("a8").setPiece(blackRook1);
+        board.getSpotAt("h8").setPiece(blackRook2);
+        board.getSpotAt("b6").setPiece(whiteKnight);
+        board.getSpotAt("c4").setPiece(whiteBishop);
+        assertFalse(blackKing.canCastle(board, "g8", moveList));
+        assertFalse(blackKing.canCastle(board, "c8", moveList));
+        whiteKnight.getSpot().removePiece();
+        whiteBishop.getSpot().removePiece();
+        whiteKnight.setCaptured(true);
+        whiteBishop.setCaptured(true);
+        assertTrue(blackKing.canCastle(board, "g8", moveList));
+        assertTrue(blackKing.canCastle(board, "c8", moveList));
     }
 
     @Test

@@ -93,21 +93,40 @@ public class King extends Piece{
             }
             if(!rookSpot.isEmpty() && rookSpot.getPiece() instanceof Rook rook){
                 int currentRow = this.getSpot().getRow();
+                Spot newRookSpot;
+                if(moveList.hasPieceMoved(rook)){
+                    return false;
+                }
                 if(rookSpot.getColumn() == 0){
+                    // castle left
+                    newRookSpot = board.getSpotAt(currentRow, 3);
                     for(int j = 1; j <= 3; j++){
                         if(!board.getSpotAt(currentRow, j).isEmpty()){
                             return false;
                         }
                     }
-                }
-                else{
+                }else{
+                    // castle right
+                    newRookSpot = board.getSpotAt(currentRow, 4);
                     for(int j = 5; j <= 6; j++){
                         if(!board.getSpotAt(currentRow, j).isEmpty()){
                             return false;
                         }
                     }
                 }
-                return !moveList.hasPieceMoved(rook);
+                // check if castling puts king in check
+                rookSpot.removePiece();
+                Spot kingStartingSpot = this.getSpot();
+                kingStartingSpot.removePiece();
+                newRookSpot.setPiece(rook);
+                end.setPiece(this);
+                boolean rv = !this.isCurrentlyInCheck(board);
+                // revert board back to original
+                newRookSpot.removePiece();
+                end.removePiece();
+                rookSpot.setPiece(rook);
+                kingStartingSpot.setPiece(this);
+                return rv;
             }
         }
         return false;

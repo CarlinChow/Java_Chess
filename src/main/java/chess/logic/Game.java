@@ -41,9 +41,11 @@ public class Game {
     public void resignGame(){
         this.gameStatus = GameStatus.RESIGNATION;
     }
-    private void nextTurn(){ this.currentTurn = this.currentTurn == Color.WHITE ? Color.BLACK : Color.WHITE; }
+    private void nextTurn(){
+        this.currentTurn = this.currentTurn == Color.WHITE ? Color.BLACK : Color.WHITE;
+    }
 
-    public void makeMove(Piece piece, String chessCoordinates) throws IllegalMoveException, IncorrectPlayerTurnException, KingInCheckAfterMoveException {
+    public void makeMove(Piece piece, String chessCoordinates) throws IllegalMoveException, IncorrectPlayerTurnException, KingInCheckException {
         if(this.gameStatus != GameStatus.ACTIVE){
             throw new GameIsNoLongerActiveException("Game has finished with " + this.gameStatus);
         }
@@ -52,33 +54,30 @@ public class Game {
         }
         if(piece instanceof King kingPiece){ // check for castling move
             if(kingPiece.canCastle(this.board, chessCoordinates, this.moveList)){
-                // add castle move to moveList
-                this.castle(); // castle
-                return;
+                this.castle(piece, chessCoordinates);
             }
+        }else{
+            if(!piece.canMove(this.board, chessCoordinates)){
+                throw new IllegalMoveException("Piece cannot be moved to " + chessCoordinates);
+            }
+            if(this.isInCheckAfterMove(this.currentTurn, piece, chessCoordinates)){
+                throw new KingInCheckException("Your King cannot be in check after move");
+            }
+            // make move
+            Spot endSpot = this.board.getSpotAt(chessCoordinates);
+            Piece capturedPiece = null;
+            if(!endSpot.isEmpty()){
+                capturedPiece = endSpot.getPiece();
+                capturedPiece.setCaptured(true);
+            }
+            piece.getSpot().removePiece();
+            endSpot.setPiece(piece);
+            this.moveList.add(new Move(piece, endSpot, capturedPiece));
         }
-        if(!piece.canMove(this.board, chessCoordinates)){
-            throw new IllegalMoveException("Piece cannot be moved to " + chessCoordinates);
-        }
-        if(this.isKingNotInCheckAfterMove(piece, chessCoordinates)){
-            throw new KingInCheckAfterMoveException("Your King cannot be in check after move");
-        }
-
-        // make move
-        Spot endSpot = this.board.getSpotAt(chessCoordinates);
-        Piece capturedPiece = null;
-        if(!endSpot.isEmpty()){
-            capturedPiece = endSpot.getPiece();
-            capturedPiece.setCaptured(true);
-        }
-        piece.getSpot().removePiece();
-        endSpot.setPiece(piece);
-        this.moveList.add(new Move(piece, endSpot, capturedPiece));
         this.inCheck = this.computeInCheck();
-
         if(this.inCheck != null){
             // check for checkmate, and rewrite game status if need be
-            if(this.isInCheckMate(this.inCheck)){
+            if(this.isInCheckmate(this.inCheck)){
                 this.gameStatus = this.inCheck == Color.WHITE ? GameStatus.WHITE_WIN : GameStatus.BLACK_WIN;
             }
         }else{
@@ -91,8 +90,8 @@ public class Game {
     }
 
     private Color computeInCheck(){ // needs testing
-        boolean whiteKingInCheck = this.isKingInCheck(Color.WHITE);
-        boolean blackKingInCheck = this.isKingInCheck(Color.BLACK);
+        boolean whiteKingInCheck = this.isInCheck(Color.WHITE);
+        boolean blackKingInCheck = this.isInCheck(Color.BLACK);
         if(whiteKingInCheck && blackKingInCheck){
             throw new RuntimeException("both players cannot be in check at the same time");
         }
@@ -105,7 +104,7 @@ public class Game {
         return null;
     }
 
-    private boolean isKingInCheck(Color color){ // needs testing
+    private boolean isInCheck(Color color){ // needs testing
         List<King> kingList = this.board.getKingPieces()
                 .stream()
                 .filter(piece -> piece.getColor() == color)
@@ -116,10 +115,7 @@ public class Game {
         return kingList.get(0).isCurrentlyInCheck(this.board);
     }
 
-    private boolean isInCheckMate(Color color){ // needs testing
-        if(this.inCheck != color){
-            return false;
-        }
+    private boolean isInCheckmate(Color color){ // needs testing
         Set<Piece> friendlyPieces = this.board.getAllActivePieces()
                                         .stream()
                                         .filter(piece -> piece.getColor() == color)
@@ -127,7 +123,7 @@ public class Game {
         for(Piece friendlyPiece : friendlyPieces){
             Set<Spot> moves = friendlyPiece.getMoves(this.board);
             for(Spot moveSpot : moves){
-                if(!this.isKingNotInCheckAfterMove(friendlyPiece, moveSpot.getChessCoordinates())){
+                if(this.isInCheckAfterMove(this.currentTurn, friendlyPiece, moveSpot.getChessCoordinates())){
                     return false;
                 }
             }
@@ -147,7 +143,7 @@ public class Game {
             Set<Spot> moves = piece.getMoves(this.board);
             if(!moves.isEmpty()){
                 for(Spot moveSpot : moves) {
-                    if (this.isKingNotInCheckAfterMove(piece, moveSpot.getChessCoordinates())) {
+                    if (this.isInCheckAfterMove(this.currentTurn, piece, moveSpot.getChessCoordinates())) {
                         return false;
                     }
                 }
@@ -156,8 +152,8 @@ public class Game {
         return true;
     }
 
-    private boolean isKingNotInCheckAfterMove(Piece piece, String chessCoordinates){ // needs testing
-        // return true if move does not put king in check, false otherwise
+    private boolean isInCheckAfterMove(Color color, Piece piece, String chessCoordinates){ // needs testing
+        // return true if move puts king in check, false otherwise
         Spot endSpot = board.getSpotAt(chessCoordinates);
         Spot startSpot = piece.getSpot();
         Piece capturedPiece = null;
@@ -167,17 +163,34 @@ public class Game {
         }
         startSpot.removePiece();
         endSpot.setPiece(piece);
-        boolean rv = this.currentTurn != this.computeInCheck();
-        startSpot.setPiece(piece); // revert board
+        boolean rv = this.isInCheck(color);
+        startSpot.setPiece(piece); // revert move
         endSpot.removePiece();
         if(capturedPiece != null){
-            capturedPiece.setCaptured(false);
             endSpot.setPiece(capturedPiece);
+            capturedPiece.setCaptured(false);
         }
         return rv;
     }
 
-    private void castle(){
-
+    private void castle(Piece king, String chessCoordinates){
+        Spot rookSpot;
+        Spot newRookSpot;
+        int currentRow = king.getSpot().getRow();
+        if(Character.toString(chessCoordinates.charAt(0)).equals("g")){ // castle right
+            rookSpot = board.getSpotAt(currentRow, 7);
+            newRookSpot = board.getSpotAt(currentRow, 4);
+        }else{ // castle left
+            rookSpot = board.getSpotAt(king.getSpot().getRow(), 0);
+            newRookSpot = board.getSpotAt(currentRow, 3);
+        }
+        Piece rook = rookSpot.getPiece();
+        Spot newKingSpot = board.getSpotAt(chessCoordinates);
+        moveList.add(new Move(king, newKingSpot));
+        moveList.add(new Move(rook, newRookSpot));
+        king.getSpot().removePiece();
+        rookSpot.removePiece();
+        newRookSpot.setPiece(rook);
+        newKingSpot.setPiece(king);
     }
 }
