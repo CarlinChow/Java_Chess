@@ -41,10 +41,7 @@ public class Pawn extends Piece{
             return end.isEmpty();
         }
         // check if attack is legal
-        if(abs(verticalMovement) == 1 && abs(horizontalMovement) == 1){
-            return !end.isEmpty() && end.getPiece().getColor() != this.getColor();
-        }
-        return false;
+        return canCapture(board, start, end);
     }
 
     @Override

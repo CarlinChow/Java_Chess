@@ -35,11 +35,13 @@ public class Spot {
     }
 
     public Piece removePiece(){
-        Piece tmpPiece = this.piece;
-        if(tmpPiece == null){
+        if(this.isEmpty()){
             return null;
         }
-        tmpPiece.setSpot(null);
+        Piece tmpPiece = this.piece;
+        if(tmpPiece.getSpot().equals(this)){
+            tmpPiece.setSpot(null);
+        }
         this.piece = null;
         return tmpPiece;
     }
