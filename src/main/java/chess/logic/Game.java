@@ -12,6 +12,7 @@ import chess.types.Color;
 import java.util.Set;
 import java.util.List;
 import java.util.stream.Collectors;
+import static java.lang.Math.abs;
 
 public class Game {
     private final Board board;
@@ -19,6 +20,7 @@ public class Game {
     private Color inCheck;
     private Color currentTurn;
     private final MoveList moveList;
+    private Piece enPassantVulnerable;
 
     public Game(){
         this.board = new Board();
@@ -26,6 +28,7 @@ public class Game {
         this.inCheck = null;
         this.currentTurn = Color.WHITE;
         this.moveList = new MoveList();
+        this.enPassantVulnerable = null;
     }
 
     // getters
@@ -52,10 +55,8 @@ public class Game {
         this.currentTurn = this.currentTurn == Color.WHITE ? Color.BLACK : Color.WHITE;
     }
 
-    public void makeMove(Piece piece, Spot end) throws IllegalMoveException, IncorrectPlayerTurnException, KingInCheckException {
-        this.makeMove(piece, end.getChessCoordinates());
-    }
     public void makeMove(Piece piece, String chessCoordinates) throws IllegalMoveException, IncorrectPlayerTurnException, KingInCheckException {
+        Spot end = this.board.getSpotAt(chessCoordinates);
         if(this.gameStatus != GameStatus.ACTIVE){
             throw new GameIsNoLongerActiveException("Game has finished with " + this.gameStatus);
         }
@@ -63,7 +64,9 @@ public class Game {
             throw new IncorrectPlayerTurnException("It is currently player " + this.currentTurn + "'s turn, not player " + piece.getColor() + "'s");
         }
         if(piece instanceof King kingPiece && kingPiece.canCastle(this.board, chessCoordinates, this.moveList)){ // castling move
-                this.castle(piece, chessCoordinates);
+                this.castle(kingPiece, chessCoordinates);
+        }else if(piece instanceof Pawn pawnPiece && pawnPiece.canEnPassant(this.board, chessCoordinates) && this.equalsEnPassantPiece(piece, chessCoordinates)){ // handle enPassant
+                this.enPassant(piece, chessCoordinates);
         }else{
             if(!piece.canMove(this.board, chessCoordinates)){
                 throw new IllegalMoveException("Piece cannot be moved to " + chessCoordinates);
@@ -79,9 +82,16 @@ public class Game {
                 capturedPiece = endSpot.removePiece();
                 capturedPiece.setCaptured(true);
             }
-            piece.getSpot().removePiece();
+            startSpot.removePiece();
             endSpot.setPiece(piece);
             this.moveList.add(new Move(piece, endSpot, capturedPiece));
+            // set up enPassant piece
+            if(this.enPassantVulnerable.getColor() == this.currentTurn){
+                this.enPassantVulnerable = null;
+            }
+            if(piece instanceof Pawn && abs(startSpot.getRow() - endSpot.getRow()) == 2){
+                this.enPassantVulnerable = piece;
+            }
         }
         this.inCheck = this.computeInCheck();
         if(this.inCheck != null){
@@ -97,7 +107,7 @@ public class Game {
         this.nextTurn();
     }
 
-    private Color computeInCheck(){ // needs testing
+    private Color computeInCheck(){
         boolean whiteKingInCheck = this.isInCheck(Color.WHITE);
         boolean blackKingInCheck = this.isInCheck(Color.BLACK);
         if(whiteKingInCheck && blackKingInCheck){
@@ -112,7 +122,7 @@ public class Game {
         return null;
     }
 
-    private boolean isInCheck(Color color){ // needs testing
+    private boolean isInCheck(Color color){
         List<King> kingList = this.board.getKingPieces()
                 .stream()
                 .filter(piece -> piece.getColor() == color)
@@ -123,7 +133,7 @@ public class Game {
         return kingList.get(0).isCurrentlyInCheck(this.board);
     }
 
-    private boolean isInCheckmate(Color color){ // needs testing
+    private boolean isInCheckmate(Color color){
         Set<Piece> pieces = this.board.getAllActivePieces()
                                         .stream()
                                         .filter(piece -> piece.getColor() == color)
@@ -160,7 +170,7 @@ public class Game {
         return true;
     }
 
-    private boolean isInCheckAfterMove(Color color, Piece piece, String chessCoordinates){ // needs testing
+    private boolean isInCheckAfterMove(Color color, Piece piece, String chessCoordinates){
         // return true if move puts king in check, false otherwise
         Spot endSpot = board.getSpotAt(chessCoordinates);
         Spot startSpot = piece.getSpot();
@@ -181,7 +191,7 @@ public class Game {
         return rv;
     }
 
-    private void castle(Piece king, String chessCoordinates){
+    private void castle(King king, String chessCoordinates){
         Spot rookSpot;
         Spot newRookSpot;
         int currentRow = king.getSpot().getRow();
@@ -200,5 +210,27 @@ public class Game {
         rookSpot.removePiece();
         newRookSpot.setPiece(rook);
         newKingSpot.setPiece(king);
+        king.setIsCastlingDone(true);
+    }
+
+    private void enPassant(Piece piece, String chessCoordinates){
+        Spot startSpot = piece.getSpot();
+        Spot endSpot = board.getSpotAt(chessCoordinates);
+        int forwardDirection = piece.getColor() == Color.WHITE ? 1 : -1;
+        Spot enPassantSpot = board.getSpotAt(endSpot.getRow() - forwardDirection, endSpot.getColumn());
+        Piece capturedPiece = enPassantSpot.getPiece();
+        capturedPiece.setCaptured(true);
+        enPassantSpot.removePiece();
+        startSpot.removePiece();
+        endSpot.setPiece(piece);
+        this.moveList.add(new Move(piece, endSpot, capturedPiece));
+    }
+
+    private boolean equalsEnPassantPiece(Piece piece, String chessCoordinates){
+        Spot endSpot = board.getSpotAt(chessCoordinates);
+        int forwardDirection = piece.getColor() == Color.WHITE ? 1 : -1;
+        Spot enPassantSpot = board.getSpotAt(endSpot.getRow() - forwardDirection, endSpot.getColumn());
+        Piece capturePiece = enPassantSpot.getPiece();
+        return this.enPassantVulnerable.equals(capturePiece);
     }
 }

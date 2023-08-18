@@ -1,10 +1,13 @@
 package chess.domain.pieces;
 
 import chess.domain.*;
+import chess.logic.Move;
+import chess.logic.MoveList;
 import chess.types.Color;
 import static java.lang.Math.abs;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.List;
 
 public class Pawn extends Piece{
 
@@ -48,9 +51,25 @@ public class Pawn extends Piece{
     public boolean canCapture(Board board, Spot start, Spot end){
         int verticalMovement = start.getRow() - end.getRow();
         int horizontalMovement = start.getColumn() - end.getColumn();
-        int direction = this.getColor() == Color.WHITE ? 1 : -1;
-        if(abs(horizontalMovement) == 1 && verticalMovement == direction){
+        int forwardDirection = this.getColor() == Color.WHITE ? 1 : -1;
+        if(abs(horizontalMovement) == 1 && verticalMovement == forwardDirection){
             return !end.isEmpty() && end.getPiece().getColor() != this.getColor();
+        }
+        return false;
+    }
+
+    public boolean canEnPassant(Board board, String chessCoordinates){
+        Spot start = this.getSpot();
+        Spot end = board.getSpotAt(chessCoordinates);
+        int verticalMovement = start.getRow() - end.getRow();
+        int horizontalMovement = start.getColumn() - end.getColumn();
+        int forwardDirection = this.getColor() == Color.WHITE ? 1 : -1;
+        Spot enPassantSpot = board.getSpotAt(end.getRow() - forwardDirection, end.getColumn());
+        if(abs(horizontalMovement) == 1 && verticalMovement == forwardDirection && !enPassantSpot.isEmpty()){
+            Piece capturePiece = enPassantSpot.getPiece();
+            return end.isEmpty() &&
+                   capturePiece.getColor() != this.getColor() &&
+                   capturePiece instanceof Pawn;
         }
         return false;
     }
