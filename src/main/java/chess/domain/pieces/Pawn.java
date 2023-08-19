@@ -58,17 +58,21 @@ public class Pawn extends Piece{
         return false;
     }
 
-    public boolean canEnPassant(Board board, String chessCoordinates){
+    public boolean canEnPassant(Board board, String chessCoordinates, Piece enPassantVulnerablePiece){
+        if(enPassantVulnerablePiece == null){
+            return false;
+        }
         Spot start = this.getSpot();
         Spot end = board.getSpotAt(chessCoordinates);
         int verticalMovement = start.getRow() - end.getRow();
         int horizontalMovement = start.getColumn() - end.getColumn();
         int forwardDirection = this.getColor() == Color.WHITE ? 1 : -1;
-        Spot enPassantSpot = board.getSpotAt(end.getRow() - forwardDirection, end.getColumn());
+        Spot enPassantSpot = board.getSpotAt(start.getRow(), end.getColumn());
         if(abs(horizontalMovement) == 1 && verticalMovement == forwardDirection && !enPassantSpot.isEmpty()){
             Piece capturePiece = enPassantSpot.getPiece();
-            return end.isEmpty() &&
+            return enPassantVulnerablePiece.equals(capturePiece) &&
                    capturePiece.getColor() != this.getColor() &&
+                   end.isEmpty() &&
                    capturePiece instanceof Pawn;
         }
         return false;

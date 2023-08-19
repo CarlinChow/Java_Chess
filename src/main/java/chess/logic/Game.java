@@ -56,7 +56,6 @@ public class Game {
     }
 
     public void makeMove(Piece piece, String chessCoordinates) throws IllegalMoveException, IncorrectPlayerTurnException, KingInCheckException {
-        Spot end = this.board.getSpotAt(chessCoordinates);
         if(this.gameStatus != GameStatus.ACTIVE){
             throw new GameIsNoLongerActiveException("Game has finished with " + this.gameStatus);
         }
@@ -65,7 +64,7 @@ public class Game {
         }
         if(piece instanceof King kingPiece && kingPiece.canCastle(this.board, chessCoordinates, this.moveList)){ // castling move
                 this.castle(kingPiece, chessCoordinates);
-        }else if(piece instanceof Pawn pawnPiece && pawnPiece.canEnPassant(this.board, chessCoordinates) && this.equalsEnPassantPiece(piece, chessCoordinates)){ // handle enPassant
+        }else if(piece instanceof Pawn pawnPiece && pawnPiece.canEnPassant(this.board, chessCoordinates, enPassantVulnerable)){ // handle enPassant
                 this.enPassant(piece, chessCoordinates);
         }else{
             if(!piece.canMove(this.board, chessCoordinates)){
@@ -86,7 +85,7 @@ public class Game {
             endSpot.setPiece(piece);
             this.moveList.add(new Move(piece, endSpot, capturedPiece));
             // set up enPassant piece
-            if(this.enPassantVulnerable.getColor() == this.currentTurn){
+            if(this.enPassantVulnerable != null && enPassantVulnerable.getColor() == this.currentTurn){
                 this.enPassantVulnerable = null;
             }
             if(piece instanceof Pawn && abs(startSpot.getRow() - endSpot.getRow()) == 2){
@@ -216,8 +215,7 @@ public class Game {
     private void enPassant(Piece piece, String chessCoordinates){
         Spot startSpot = piece.getSpot();
         Spot endSpot = board.getSpotAt(chessCoordinates);
-        int forwardDirection = piece.getColor() == Color.WHITE ? 1 : -1;
-        Spot enPassantSpot = board.getSpotAt(endSpot.getRow() - forwardDirection, endSpot.getColumn());
+        Spot enPassantSpot = board.getSpotAt(startSpot.getRow(), endSpot.getColumn());
         Piece capturedPiece = enPassantSpot.getPiece();
         capturedPiece.setCaptured(true);
         enPassantSpot.removePiece();
@@ -228,8 +226,8 @@ public class Game {
 
     private boolean equalsEnPassantPiece(Piece piece, String chessCoordinates){
         Spot endSpot = board.getSpotAt(chessCoordinates);
-        int forwardDirection = piece.getColor() == Color.WHITE ? 1 : -1;
-        Spot enPassantSpot = board.getSpotAt(endSpot.getRow() - forwardDirection, endSpot.getColumn());
+        Spot startSpot = piece.getSpot();
+        Spot enPassantSpot = board.getSpotAt(startSpot.getRow(), endSpot.getColumn());
         Piece capturePiece = enPassantSpot.getPiece();
         return this.enPassantVulnerable.equals(capturePiece);
     }

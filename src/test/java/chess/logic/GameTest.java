@@ -108,6 +108,84 @@ public class GameTest {
         }
     }
 
+    @Test
+    public void testEnPassant(){
+        Game game = new Game();
+        Board board = game.getBoard();
+        Piece whitePawnA = board.getSpotAt("a2").removePiece();
+        board.getSpotAt("a5").setPiece(whitePawnA);
+        Piece whitePawnB = board.getSpotAt("b2").getPiece();
+        Piece whitePawnC = board.getSpotAt("c2").removePiece();
+        board.getSpotAt("c5").setPiece(whitePawnC);
+        Piece whitePawnD = board.getSpotAt("d2").getPiece();
+        Piece whitePawnE = board.getSpotAt("e2").removePiece();
+        board.getSpotAt("e5").setPiece(whitePawnE);
+        Piece whitePawnF = board.getSpotAt("f2").getPiece();
+        Piece whitePawnG = board.getSpotAt("g2").removePiece();
+        board.getSpotAt("g5").setPiece(whitePawnG);
+        Piece whitePawnH = board.getSpotAt("h2").getPiece();
+        Piece blackPawnA = board.getSpotAt("a7").removePiece();
+        board.getSpotAt("a4").setPiece(blackPawnA);
+        Piece blackPawnB = board.getSpotAt("b7").getPiece();
+        Piece blackPawnC = board.getSpotAt("c7").removePiece();
+        board.getSpotAt("c4").setPiece(blackPawnC);
+        Piece blackPawnD = board.getSpotAt("d7").getPiece();
+        Piece blackPawnE = board.getSpotAt("e7").removePiece();
+        board.getSpotAt("e4").setPiece(blackPawnE);
+        Piece blackPawnF = board.getSpotAt("f7").getPiece();
+        Piece blackPawnG = board.getSpotAt("g7").removePiece();
+        board.getSpotAt("g4").setPiece(blackPawnG);
+        Piece blackPawnH = board.getSpotAt("h7").getPiece();
+
+        try{
+            game.makeMove(board.getSpotAt("e1").getPiece(), "e2");
+            game.makeMove(blackPawnB, "b5");
+            game.makeMove(whitePawnA, "b6");
+            assertTrue(blackPawnB.isCaptured());
+            assertSame(board.getSpotAt("b6"), whitePawnA.getSpot());
+            game.makeMove(blackPawnD, "d5");
+            game.makeMove(whitePawnE, "d6");
+            assertTrue(blackPawnD.isCaptured());
+            assertSame(board.getSpotAt("d6"), whitePawnE.getSpot());
+            game.makeMove(blackPawnH, "h5");
+            game.makeMove(whitePawnG, "h6");
+            assertTrue(blackPawnH.isCaptured());
+            assertSame(board.getSpotAt("h6"), whitePawnG.getSpot());
+            game.makeMove(board.getSpotAt("e8").getPiece(), "d7");
+            game.makeMove(whitePawnB, "b4");
+            game.makeMove(blackPawnA, "b3");
+            assertTrue(whitePawnB.isCaptured());
+            assertSame(board.getSpotAt("b3"), blackPawnA.getSpot());
+            game.makeMove(whitePawnD, "d4");
+            game.makeMove(blackPawnE, "d3");
+            assertTrue(whitePawnD.isCaptured());
+            assertSame(board.getSpotAt("d3"), blackPawnE.getSpot());
+            board.print();
+            game.makeMove(board.getSpotAt("e2").getPiece(), "e1");
+            game.makeMove(board.getSpotAt("d7").getPiece(), "e8");
+            game.makeMove(whitePawnH, "h4");
+            game.makeMove(blackPawnG, "h3");
+            assertTrue(whitePawnH.isCaptured());
+            assertSame(board.getSpotAt("h3"), blackPawnG.getSpot());
+            board.print();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test(expected = IllegalMoveException.class)
+    public void testIllegalEnPassant() throws KingInCheckException, IllegalMoveException, IncorrectPlayerTurnException{
+        Game game = new Game();
+        Board board = game.getBoard();
+        Piece whitePawn = board.getSpotAt("e2").getPiece();
+        Piece blackPawn = board.getSpotAt("f7").getPiece();
+        game.makeMove(whitePawn, "e4");
+        game.makeMove(blackPawn, "f5");
+        game.makeMove(whitePawn, "e5");
+        game.makeMove(board.getSpotAt("b8").getPiece(), "a6");
+        game.makeMove(whitePawn, "f6");
+    }
+
     // exceptions testing
     @Test(expected = GameIsNoLongerActiveException.class)
     public void testGameIsNoLongerActiveException() throws KingInCheckException, IllegalMoveException, IncorrectPlayerTurnException {
