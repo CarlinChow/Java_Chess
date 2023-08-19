@@ -67,11 +67,11 @@ public class Game {
         }else if(piece instanceof Pawn pawnPiece && pawnPiece.canEnPassant(this.board, chessCoordinates, enPassantVulnerable)){ // handle enPassant
                 this.enPassant(piece, chessCoordinates);
         }else{
-            if(!piece.canMove(this.board, chessCoordinates)){
-                throw new IllegalMoveException("Piece cannot be moved to " + chessCoordinates);
-            }
             if(this.isInCheckAfterMove(this.currentTurn, piece, chessCoordinates)){
                 throw new KingInCheckException("Your King cannot be in check after move");
+            }
+            if(!piece.canMove(this.board, chessCoordinates)){
+                throw new IllegalMoveException("Piece cannot be moved to " + chessCoordinates);
             }
             // make move
             Spot startSpot = piece.getSpot();
