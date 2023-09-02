@@ -5,7 +5,7 @@ import chess.types.Color;
 
 public class Move {
     private final Color turn;
-    private final Piece piece;
+    private Piece piece;
     private final Spot start;
     private final Spot end;
     private final Piece capturedPiece;

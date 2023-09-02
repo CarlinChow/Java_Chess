@@ -174,7 +174,7 @@ public class GameTest {
     }
 
     @Test(expected = IllegalMoveException.class)
-    public void testIllegalEnPassant() throws KingInCheckException, IllegalMoveException, IncorrectPlayerTurnException{
+    public void testIllegalEnPassant() throws KingInCheckException, IllegalMoveException, IncorrectPlayerTurnException, PawnPromotionException{
         Game game = new Game();
         Board board = game.getBoard();
         Piece whitePawn = board.getSpotAt("e2").getPiece();
@@ -188,26 +188,26 @@ public class GameTest {
 
     // exceptions testing
     @Test(expected = GameIsNoLongerActiveException.class)
-    public void testGameIsNoLongerActiveException() throws KingInCheckException, IllegalMoveException, IncorrectPlayerTurnException {
+    public void testGameIsNoLongerActiveException() throws KingInCheckException, IllegalMoveException, IncorrectPlayerTurnException, PawnPromotionException {
         Game game = new Game();
         Board board = game.getBoard();
         game.resignGame();
         game.makeMove(board.getSpotAt("e2").getPiece(), "e4");
     }
     @Test(expected = IllegalMoveException.class)
-    public void testIllegalMoveException() throws KingInCheckException, IllegalMoveException, IncorrectPlayerTurnException {
+    public void testIllegalMoveException() throws KingInCheckException, IllegalMoveException, IncorrectPlayerTurnException, PawnPromotionException {
         Game game = new Game();
         Board board = game.getBoard();
         game.makeMove(board.getSpotAt("b1").getPiece(), "d2");
     }
     @Test(expected = IncorrectPlayerTurnException.class)
-    public void testIncorrectPlayerTurnException() throws KingInCheckException, IllegalMoveException, IncorrectPlayerTurnException {
+    public void testIncorrectPlayerTurnException() throws KingInCheckException, IllegalMoveException, IncorrectPlayerTurnException, PawnPromotionException {
         Game game = new Game();
         Board board = game.getBoard();
         game.makeMove(board.getSpotAt("e7").getPiece(), "e5");
     }
     @Test(expected = KingInCheckException.class)
-    public void testKingInCheckException1() throws KingInCheckException, IllegalMoveException, IncorrectPlayerTurnException {
+    public void testKingInCheckException1() throws KingInCheckException, IllegalMoveException, IncorrectPlayerTurnException, PawnPromotionException {
         Game game = new Game();
         Board board = game.getBoard();
         this.setUp(game);
@@ -219,7 +219,7 @@ public class GameTest {
         game.makeMove(board.getSpotAt("e2").getPiece(), "c4");
     }
     @Test(expected = KingInCheckException.class)
-    public void testKingInCheckException2() throws KingInCheckException, IllegalMoveException, IncorrectPlayerTurnException {
+    public void testKingInCheckException2() throws KingInCheckException, IllegalMoveException, IncorrectPlayerTurnException, PawnPromotionException {
         Game game = new Game();
         Board board = game.getBoard();
         this.setUp(game);

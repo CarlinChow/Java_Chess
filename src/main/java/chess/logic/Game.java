@@ -1,8 +1,6 @@
 package chess.logic;
 // features still need to implement
     // pawn promotion
-    // en passant
-
 
 import chess.domain.*;
 import chess.domain.pieces.*;
@@ -55,7 +53,7 @@ public class Game {
         this.currentTurn = this.currentTurn == Color.WHITE ? Color.BLACK : Color.WHITE;
     }
 
-    public void makeMove(Piece piece, String chessCoordinates) throws IllegalMoveException, IncorrectPlayerTurnException, KingInCheckException {
+    public void makeMove(Piece piece, String chessCoordinates) throws IllegalMoveException, IncorrectPlayerTurnException, KingInCheckException, PawnPromotionException {
         if(this.gameStatus != GameStatus.ACTIVE){
             throw new GameIsNoLongerActiveException("Game has finished with " + this.gameStatus);
         }
@@ -91,19 +89,41 @@ public class Game {
             if(piece instanceof Pawn && abs(startSpot.getRow() - endSpot.getRow()) == 2){
                 this.enPassantVulnerable = piece;
             }
-        }
-        this.inCheck = this.computeInCheck();
-        if(this.inCheck != null){
-            if(this.isInCheckmate(this.inCheck)){
-                this.gameStatus = this.inCheck == Color.WHITE ? GameStatus.BLACK_WIN : GameStatus.WHITE_WIN;
-            }
-        }else{
-            Color opponentColor = currentTurn == Color.WHITE ? Color.BLACK : Color.WHITE;
-            if(this.isDraw(opponentColor)){
-                this.gameStatus = GameStatus.STALEMATE;
+            if(this.isPawnPromotable(piece)){
+                throw new PawnPromotionException("input is needed to promote pawn"); // must use Game.promotePawn() afterwards to progress
             }
         }
+        this.computeAllStatuses();
         this.nextTurn();
+    }
+
+    public void promotePawn(String classType){
+        int endRow = this.currentTurn == Color.WHITE ? 0 : 7;
+        for(int j = 0; j < 8; j++){
+            Spot spot = this.board.getSpotAt(endRow, j);
+            if(!spot.isEmpty() && spot.getPiece() instanceof Pawn && spot.getPiece().getColor() == this.currentTurn){
+                Piece pawn = spot.removePiece();
+                this.board.removePiece(pawn);
+                Piece newPiece = switch (classType.toLowerCase()) {
+                    case "q" -> new Queen(this.currentTurn);
+                    case "r" -> new Rook(this.currentTurn);
+                    case "b" -> new Bishop(this.currentTurn);
+                    case "k" -> new Knight(this.currentTurn);
+                    default -> throw new IllegalArgumentException("invalid argument for Game.promotePawn()");
+                };
+                this.board.addPiece(newPiece);
+                spot.setPiece(newPiece);
+                this.moveList.add(new Move(newPiece, spot));
+                break;
+            }
+        }
+        this.computeAllStatuses();
+        this.nextTurn();
+    }
+
+    private boolean isPawnPromotable(Piece piece){
+        int endRow = piece.getColor() == Color.WHITE ? 0 : 7;
+        return piece.getSpot().getRow() == endRow && piece instanceof Pawn;
     }
 
     private Color computeInCheck(){
@@ -224,11 +244,18 @@ public class Game {
         this.moveList.add(new Move(piece, endSpot, capturedPiece));
     }
 
-    private boolean equalsEnPassantPiece(Piece piece, String chessCoordinates){
-        Spot endSpot = board.getSpotAt(chessCoordinates);
-        Spot startSpot = piece.getSpot();
-        Spot enPassantSpot = board.getSpotAt(startSpot.getRow(), endSpot.getColumn());
-        Piece capturePiece = enPassantSpot.getPiece();
-        return this.enPassantVulnerable.equals(capturePiece);
+    private void computeAllStatuses(){
+        // computes and updates gameStatus and checkStatus
+        this.inCheck = this.computeInCheck();
+        if(this.inCheck != null){
+            if(this.isInCheckmate(this.inCheck)){
+                this.gameStatus = this.inCheck == Color.WHITE ? GameStatus.BLACK_WIN : GameStatus.WHITE_WIN;
+            }
+        }else{
+            Color opponentColor = currentTurn == Color.WHITE ? Color.BLACK : Color.WHITE;
+            if(this.isDraw(opponentColor)){
+                this.gameStatus = GameStatus.STALEMATE;
+            }
+        }
     }
 }

@@ -8,7 +8,7 @@ public class MoveList {
     private final List<Move> moves;
 
     public MoveList(){
-        this.moves = new LinkedList<Move>();
+        this.moves = new LinkedList<>();
     }
 
     public List<Move> getAllMoves(){
