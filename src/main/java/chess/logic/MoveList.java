@@ -20,12 +20,12 @@ public class MoveList {
     }
 
     public boolean hasPieceMoved(Piece piece){
-        for(Move move: this.moves){
-            if(move.getPiece().equals(piece)){
-                return true;
-            }
-        }
-        return false;
+        int timesMoved = this.moves
+                            .stream()
+                            .filter(move -> move.getPiece().equals(piece))
+                            .toList()
+                            .size();
+        return timesMoved > 0;
     }
 
     @Override

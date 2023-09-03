@@ -1,14 +1,17 @@
 package chess.logic;
 
 import chess.domain.*;
+import chess.types.Color;
 
 public class Move {
-    private final Piece piece;
+    private final Color turn;
+    private Piece piece;
     private final Spot start;
     private final Spot end;
     private final Piece capturedPiece;
 
     public Move(Piece piece, Spot start, Spot end, Piece capturedPiece){
+        this.turn = piece.getColor();
         this.piece = piece;
         this.start = start;
         this.end = end;

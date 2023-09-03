@@ -1,21 +1,21 @@
 package chess.domain.pieces;
 
 import chess.domain.*;
-import static java.lang.Math.abs;
-
+import chess.logic.*;
+import chess.types.Color;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.stream.Collectors;
+import static java.lang.Math.abs;
 
-import chess.logic.*;
 
 public class King extends Piece{
     private boolean isCastlingDone;
 
-    public King(boolean white){
-        super(white);
+    public King(Color color){
+        super(color);
         this.isCastlingDone = false;
     }
 
@@ -33,7 +33,7 @@ public class King extends Piece{
         int verticalMovement = start.getRow() - end.getRow();
         int horizontalMovement = start.getColumn() - end.getColumn();
         if(abs(horizontalMovement) <= 1 && abs(verticalMovement) <= 1){
-            return !this.isChecked(board, end) && (end.isEmpty() || end.getPiece().isWhite() != this.isWhite());
+            return !this.isChecked(board, end) && (end.isEmpty() || end.getPiece().getColor()!= this.getColor());
         }
         return false;
     }
@@ -54,7 +54,7 @@ public class King extends Piece{
         Set<Piece> activeOpponentPieces = board
                 .getAllActivePieces()
                 .stream()
-                .filter(piece -> this.isWhite() != piece.isWhite())
+                .filter(piece -> this.getColor() != piece.getColor())
                 .collect(Collectors.toSet());
         for(Piece piece:activeOpponentPieces){
             if(piece.canCapture(board, end)){
@@ -93,21 +93,40 @@ public class King extends Piece{
             }
             if(!rookSpot.isEmpty() && rookSpot.getPiece() instanceof Rook rook){
                 int currentRow = this.getSpot().getRow();
+                Spot newRookSpot;
+                if(moveList.hasPieceMoved(rook)){
+                    return false;
+                }
                 if(rookSpot.getColumn() == 0){
+                    // castle left
+                    newRookSpot = board.getSpotAt(currentRow, 3);
                     for(int j = 1; j <= 3; j++){
                         if(!board.getSpotAt(currentRow, j).isEmpty()){
                             return false;
                         }
                     }
-                }
-                else{
+                }else{
+                    // castle right
+                    newRookSpot = board.getSpotAt(currentRow, 4);
                     for(int j = 5; j <= 6; j++){
                         if(!board.getSpotAt(currentRow, j).isEmpty()){
                             return false;
                         }
                     }
                 }
-                return !moveList.hasPieceMoved(rook);
+                // check if castling puts king in check
+                rookSpot.removePiece();
+                Spot kingStartingSpot = this.getSpot();
+                kingStartingSpot.removePiece();
+                newRookSpot.setPiece(rook);
+                end.setPiece(this);
+                boolean rv = !this.isCurrentlyInCheck(board);
+                // revert board back to original
+                newRookSpot.removePiece();
+                end.removePiece();
+                rookSpot.setPiece(rook);
+                kingStartingSpot.setPiece(this);
+                return rv;
             }
         }
         return false;
@@ -149,6 +168,6 @@ public class King extends Piece{
 
     @Override
     public String toString(){
-        return isWhite() ? "\u2654" : "\u265A";
+        return this.getColor() == Color.WHITE ? "\u2654" : "\u265A";
     }
 }

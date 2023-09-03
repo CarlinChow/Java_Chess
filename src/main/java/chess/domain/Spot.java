@@ -35,11 +35,13 @@ public class Spot {
     }
 
     public Piece removePiece(){
-        Piece tmpPiece = this.piece;
-        if(tmpPiece == null){
+        if(this.isEmpty()){
             return null;
         }
-        tmpPiece.setSpot(null);
+        Piece tmpPiece = this.piece;
+        if(tmpPiece.getSpot().equals(this)){
+            tmpPiece.setSpot(null);
+        }
         this.piece = null;
         return tmpPiece;
     }
@@ -67,30 +69,30 @@ public class Spot {
     }
 
     public String getChessColumn(){
-        return getChessColumn(this.column);
+        return convertToChessColumn(this.column);
     }
 
     public String getChessRow(){
-        return getChessRow(this.row);
+        return convertToChessRow(this.row);
     }
 
     public String getChessCoordinates(){
-        return this.getChessColumn() + this.getChessRow();
+        return convertToChessCoordinates(this.row, this.column);
     }
 
-    private static String getChessColumn(int column){
+    private static String convertToChessColumn(int column){
         return String.valueOf((char)(column + 'a'));
     }
 
-    private static String getChessRow(int row){
+    private static String convertToChessRow(int row){
         return String.valueOf(8 - row);
     }
 
-    public static String getChessCoordinates(int row, int column){
-        return getChessColumn(column) + getChessRow(row);
+    public static String convertToChessCoordinates(int row, int column){
+        return convertToChessColumn(column) + convertToChessRow(row);
     }
 
-    public static String getMatrixCoordinates(String chessCoordinates){
+    public static String convertToMatrixCoordinates(String chessCoordinates){
         String column = String.valueOf(chessCoordinates.charAt(0) - 'a');
         String row = String.valueOf(8 - Character.getNumericValue(chessCoordinates.charAt(1)));
         return row + column;

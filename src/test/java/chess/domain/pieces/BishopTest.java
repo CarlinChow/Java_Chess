@@ -2,16 +2,18 @@ package chess.domain.pieces;
 
 import chess.domain.*;
 import org.junit.Test;
+
+import static chess.types.Color.*;
 import static org.junit.Assert.*;
 import java.util.Set;
 
 public class BishopTest {
     private void setUp(Board board){
         board.clear();
-        board.getSpotAt(0,2).setPiece(new Bishop(false));
-        board.getSpotAt(0,5).setPiece(new Bishop(false));
-        board.getSpotAt(7,2).setPiece(new Bishop(true));
-        board.getSpotAt(7,5).setPiece(new Bishop(true));
+        board.getSpotAt(0,2).setPiece(new Bishop(BLACK));
+        board.getSpotAt(0,5).setPiece(new Bishop(BLACK));
+        board.getSpotAt(7,2).setPiece(new Bishop(WHITE));
+        board.getSpotAt(7,5).setPiece(new Bishop(WHITE));
     }
 
     @Test
@@ -71,13 +73,13 @@ public class BishopTest {
         // blackBishop legal capture
         blackBishop1.getSpot().removePiece();
         board.getSpotAt(1,1).setPiece(blackBishop1);
-        board.getSpotAt(7,7).setPiece(new Pawn(true));
+        board.getSpotAt(7,7).setPiece(new Pawn(WHITE));
         assertTrue(blackBishop1.canMove(board, board.getSpotAt(0,2)));
         assertTrue(blackBishop1.canMove(board, board.getSpotAt(7,7)));
         assertTrue(blackBishop1.canMove(board, board.getSpotAt(0,0)));
         assertTrue(blackBishop1.canMove(board, board.getSpotAt(4,4)));
         // whiteBishop legal capture
-        board.getSpotAt(0,7).setPiece(new Pawn(false));
+        board.getSpotAt(0,7).setPiece(new Pawn(BLACK));
         whiteBishop1.getSpot().removePiece();
         board.getSpotAt(6,1).setPiece(whiteBishop1);
         assertTrue(whiteBishop1.canMove(board, board.getSpotAt(7,2)));
@@ -99,14 +101,14 @@ public class BishopTest {
         assertFalse(whiteBishop1.canMove(board, board.getSpotAt(5,2)));
         assertFalse(whiteBishop1.canMove(board, board.getSpotAt(3,3)));
 
-        board.getSpotAt(3,2).setPiece(new Pawn(true));
-        board.getSpotAt(4,2).setPiece(new Pawn(true));
-        board.getSpotAt(3,5).setPiece(new Pawn(true));
-        board.getSpotAt(4,5).setPiece(new Pawn(true));
-        board.getSpotAt(1,1).setPiece(new Pawn(false));
-        board.getSpotAt(1,6).setPiece(new Pawn(false));
-        board.getSpotAt(6,1).setPiece(new Pawn(false));
-        board.getSpotAt(6,6).setPiece(new Pawn(false));
+        board.getSpotAt(3,2).setPiece(new Pawn(WHITE));
+        board.getSpotAt(4,2).setPiece(new Pawn(WHITE));
+        board.getSpotAt(3,5).setPiece(new Pawn(WHITE));
+        board.getSpotAt(4,5).setPiece(new Pawn(WHITE));
+        board.getSpotAt(1,1).setPiece(new Pawn(BLACK));
+        board.getSpotAt(1,6).setPiece(new Pawn(BLACK));
+        board.getSpotAt(6,1).setPiece(new Pawn(BLACK));
+        board.getSpotAt(6,6).setPiece(new Pawn(BLACK));
 
         assertFalse(blackBishop1.canMove(board, board.getSpotAt(4,6)));
         assertFalse(blackBishop2.canMove(board, board.getSpotAt(4,1)));
@@ -118,14 +120,14 @@ public class BishopTest {
         assertFalse(whiteBishop2.canMove(board, board.getSpotAt(5,7)));
 
         // flip pawn colour
-        board.getSpotAt(3,2).setPiece(new Pawn(false));
-        board.getSpotAt(4,2).setPiece(new Pawn(false));
-        board.getSpotAt(3,5).setPiece(new Pawn(false));
-        board.getSpotAt(4,5).setPiece(new Pawn(false));
-        board.getSpotAt(1,1).setPiece(new Pawn(true));
-        board.getSpotAt(1,6).setPiece(new Pawn(true));
-        board.getSpotAt(6,1).setPiece(new Pawn(true));
-        board.getSpotAt(6,6).setPiece(new Pawn(true));
+        board.getSpotAt(3,2).setPiece(new Pawn(BLACK));
+        board.getSpotAt(4,2).setPiece(new Pawn(BLACK));
+        board.getSpotAt(3,5).setPiece(new Pawn(BLACK));
+        board.getSpotAt(4,5).setPiece(new Pawn(BLACK));
+        board.getSpotAt(1,1).setPiece(new Pawn(WHITE));
+        board.getSpotAt(1,6).setPiece(new Pawn(WHITE));
+        board.getSpotAt(6,1).setPiece(new Pawn(WHITE));
+        board.getSpotAt(6,6).setPiece(new Pawn(WHITE));
 
         assertFalse(blackBishop1.canMove(board, board.getSpotAt(4,6)));
         assertFalse(blackBishop2.canMove(board, board.getSpotAt(4,1)));
@@ -145,10 +147,10 @@ public class BishopTest {
         Piece whiteKingBishop = board.getSpotAt("f1").getPiece();
         Piece blackQueenBishop = board.getSpotAt("c8").getPiece();
         Piece blackKingBishop = board.getSpotAt("f8").getPiece();
-        board.getSpotAt("a3").setPiece(new Pawn(false));
-        board.getSpotAt("h6").setPiece(new Pawn(true));
-        board.getSpotAt("a6").setPiece(new Pawn(false));
-        board.getSpotAt("h3").setPiece(new Pawn(true));
+        board.getSpotAt("a3").setPiece(new Pawn(BLACK));
+        board.getSpotAt("h6").setPiece(new Pawn(WHITE));
+        board.getSpotAt("a6").setPiece(new Pawn(BLACK));
+        board.getSpotAt("h3").setPiece(new Pawn(WHITE));
 
         Set<Spot> whiteQueenBishopMoves = whiteQueenBishop.getMoves(board);
         Set<Spot> whiteKingBishopMoves = whiteKingBishop.getMoves(board);
@@ -192,10 +194,10 @@ public class BishopTest {
         assertEquals(6, blackKingBishopMoves.size());
 
         // adding interference and potential capture moves
-        board.getSpotAt("d3").setPiece(new Pawn(false));
-        board.getSpotAt("e3").setPiece(new Pawn(true));
-        board.getSpotAt("d6").setPiece(new Pawn(false));
-        board.getSpotAt("e6").setPiece(new Pawn(true));
+        board.getSpotAt("d3").setPiece(new Pawn(BLACK));
+        board.getSpotAt("e3").setPiece(new Pawn(WHITE));
+        board.getSpotAt("d6").setPiece(new Pawn(BLACK));
+        board.getSpotAt("e6").setPiece(new Pawn(WHITE));
 
         whiteQueenBishopMoves = whiteQueenBishop.getMoves(board);
         whiteKingBishopMoves = whiteKingBishop.getMoves(board);
