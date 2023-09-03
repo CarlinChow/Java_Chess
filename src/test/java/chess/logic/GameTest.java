@@ -232,7 +232,135 @@ public class GameTest {
         game.makeMove(board.getSpotAt("d8").getPiece(), "d2");
     }
 
-    public void setUp(Game game){
+    @Test
+    public void testPawnPromotion(){
+        Game game = new Game();
+        Board board = game.getBoard();
+        board.clear();
+        Piece whiteKing = new King(WHITE);
+        Piece blackKing = new King(BLACK);
+        board.addAllPieces(Arrays.asList(whiteKing, blackKing));
+        board.getSpotAt("e8").setPiece(whiteKing);
+        board.getSpotAt("e1").setPiece(blackKing);
+        Piece blackPawn1 = new Pawn(BLACK);
+        Piece blackPawn2 = new Pawn(BLACK);
+        Piece blackPawn3 = new Pawn(BLACK);
+        Piece blackPawn4 = new Pawn(BLACK);
+        Piece blackPawn5 = new Pawn(BLACK);
+        Piece blackPawn6 = new Pawn(BLACK);
+        Piece blackPawn7 = new Pawn(BLACK);
+        Piece blackPawn8 = new Pawn(BLACK);
+        Piece whitePawn1 = new Pawn(WHITE);
+        Piece whitePawn2 = new Pawn(WHITE);
+        Piece whitePawn3 = new Pawn(WHITE);
+        Piece whitePawn4 = new Pawn(WHITE);
+        Piece whitePawn5 = new Pawn(WHITE);
+        Piece whitePawn6 = new Pawn(WHITE);
+        Piece whitePawn7 = new Pawn(WHITE);
+        Piece whitePawn8 = new Pawn(WHITE);
+        board.addAllPieces(Arrays.asList(blackPawn1, blackPawn2, blackPawn3, blackPawn4, blackPawn5, blackPawn6, blackPawn7, blackPawn8,
+                        whitePawn1, whitePawn2, whitePawn3, whitePawn4, whitePawn5, whitePawn6, whitePawn7, whitePawn8));
+        board.getSpotAt("a2").setPiece(blackPawn1);
+        board.getSpotAt("b2").setPiece(blackPawn2);
+        board.getSpotAt("c2").setPiece(blackPawn3);
+        board.getSpotAt("d2").setPiece(blackPawn4);
+        board.getSpotAt("e2").setPiece(blackPawn5);
+        board.getSpotAt("f2").setPiece(blackPawn6);
+        board.getSpotAt("g2").setPiece(blackPawn7);
+        board.getSpotAt("h2").setPiece(blackPawn8);
+        board.getSpotAt("a7").setPiece(whitePawn1);
+        board.getSpotAt("b7").setPiece(whitePawn2);
+        board.getSpotAt("c7").setPiece(whitePawn3);
+        board.getSpotAt("d7").setPiece(whitePawn4);
+        board.getSpotAt("e7").setPiece(whitePawn5);
+        board.getSpotAt("f7").setPiece(whitePawn6);
+        board.getSpotAt("g7").setPiece(whitePawn7);
+        board.getSpotAt("h7").setPiece(whitePawn8);
+        board.print();
+        try{
+            game.makeMove(whitePawn1, "a8");
+        }catch(PawnPromotionException p){
+            game.promotePawn("q");
+            assertTrue(board.getSpotAt("a8").getPiece() instanceof Queen);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        try{
+            game.makeMove(blackPawn1, "a1");
+        }catch(PawnPromotionException p){
+            game.promotePawn("q");
+            assertTrue(board.getSpotAt("a1").getPiece() instanceof Queen);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        try{
+            game.makeMove(whitePawn2, "b8");
+        }catch(PawnPromotionException p){
+            game.promotePawn("b");
+            assertTrue(board.getSpotAt("b8").getPiece() instanceof Bishop);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        try{
+            game.makeMove(blackPawn2, "b1");
+        }catch(PawnPromotionException p){
+            game.promotePawn("b");
+            assertTrue(board.getSpotAt("b1").getPiece() instanceof Bishop);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        try{
+            game.makeMove(whitePawn3, "c8");
+        }catch(PawnPromotionException p){
+            game.promotePawn("k");
+            assertTrue(board.getSpotAt("c8").getPiece() instanceof Knight);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        try{
+            game.makeMove(blackPawn3, "c1");
+        }catch(PawnPromotionException p){
+            game.promotePawn("k");
+            assertTrue(board.getSpotAt("c1").getPiece() instanceof Knight);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        try{
+            game.makeMove(whitePawn4, "d8");
+        }catch(PawnPromotionException p){
+            game.promotePawn("r");
+            assertTrue(board.getSpotAt("d8").getPiece() instanceof Rook);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        try{
+            game.makeMove(blackPawn4, "d1");
+        }catch(PawnPromotionException p){
+            game.promotePawn("r");
+            assertTrue(board.getSpotAt("d1").getPiece() instanceof Rook);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        try{
+            game.makeMove(whitePawn6, "f8");
+        }catch(PawnPromotionException p){
+            game.promotePawn("B");
+            assertTrue(board.getSpotAt("f8").getPiece() instanceof Bishop);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        try{
+            game.makeMove(blackPawn6, "f1");
+        }catch(PawnPromotionException p){
+            game.promotePawn("B");
+            assertTrue(board.getSpotAt("f1").getPiece() instanceof Bishop);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        board.print();
+    }
+
+    private void setUp(Game game){
         // set up game w/ with only two kings on the board
         Board board = game.getBoard();
         board.clear();
