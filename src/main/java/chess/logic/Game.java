@@ -1,6 +1,4 @@
 package chess.logic;
-// features still need to implement
-    // pawn promotion
 
 import chess.domain.*;
 import chess.domain.pieces.*;
@@ -47,7 +45,11 @@ public class Game {
     }
 
     public void resignGame(){
-        this.gameStatus = GameStatus.RESIGNATION;
+        if(this.currentTurn == Color.WHITE){
+            this.gameStatus = GameStatus.BLACK_WIN_BY_RESIGNATION;
+        }else{
+            this.gameStatus = GameStatus.WHITE_WIN_BY_RESIGNATION;
+        }
     }
     private void nextTurn(){
         this.currentTurn = this.currentTurn == Color.WHITE ? Color.BLACK : Color.WHITE;

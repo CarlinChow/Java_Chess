@@ -276,7 +276,6 @@ public class GameTest {
         board.getSpotAt("f7").setPiece(whitePawn6);
         board.getSpotAt("g7").setPiece(whitePawn7);
         board.getSpotAt("h7").setPiece(whitePawn8);
-        board.print();
         try{
             game.makeMove(whitePawn1, "a8");
         }catch(PawnPromotionException p){
@@ -357,7 +356,6 @@ public class GameTest {
         }catch(Exception e){
             e.printStackTrace();
         }
-        board.print();
     }
 
     private void setUp(Game game){
