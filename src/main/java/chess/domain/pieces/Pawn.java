@@ -88,6 +88,13 @@ public class Pawn extends Piece{
         if(this.canMove(board, forwardSpot)){
             moves.add(forwardSpot);
         }
+        // move forward two spots
+        if((this.getColor() == Color.WHITE && currSpot.getRow() == 6) || (this.getColor() == Color.BLACK && currSpot.getRow() == 1)){
+            Spot forwardTwoSpot = board.getSpotAt(currSpot.getRow() + forwardDirection * 2, currSpot.getColumn());
+            if(this.canMove(board, forwardTwoSpot)){
+                moves.add(forwardTwoSpot);
+            }
+        }
         // capture left
         if(currSpot.getColumn() > 0){
             Spot captureLeftSpot = board.getSpotAt(currSpot.getRow() + forwardDirection, currSpot.getColumn() - 1);
