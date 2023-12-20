@@ -1,13 +1,10 @@
 package chess.domain.pieces;
 
 import chess.domain.*;
-import chess.logic.Move;
-import chess.logic.MoveList;
 import chess.types.Color;
 import static java.lang.Math.abs;
 import java.util.Set;
 import java.util.HashSet;
-import java.util.List;
 
 public class Pawn extends Piece{
 

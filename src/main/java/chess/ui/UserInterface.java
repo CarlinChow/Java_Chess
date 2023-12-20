@@ -11,7 +11,7 @@ import static chess.types.Color.*;
 import chess.logic.exceptions.*;
 
 public class UserInterface {
-    private Scanner scanner;
+    private final Scanner scanner;
     private Game game;
 
     public UserInterface(Scanner scanner){
