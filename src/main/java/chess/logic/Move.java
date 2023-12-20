@@ -30,6 +30,10 @@ public class Move {
         this(piece, piece.getSpot(), end, capturedPiece);
     }
 
+    public Color getTurn(){
+        return this.turn;
+    }
+
     public Piece getPiece(){
         return this.piece;
     }

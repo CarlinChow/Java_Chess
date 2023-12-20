@@ -3,6 +3,7 @@ package chess.domain;
 import java.util.UUID;
 import java.util.Set;
 import chess.types.Color;
+
 public abstract class Piece {
     private final String id;
     private Spot spot;
