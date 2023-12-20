@@ -1,6 +1,6 @@
 # Commmand Line Java Chess Game 
 
-A command line chess game written in Java following Object object-oriented design principles. Two players take turns moving their pieces by inputting commands into the terminal, games can end in a draw, win or loss. 
+A command line chess game written in Java following object-oriented design principles. Two players take turns moving their pieces by inputting commands into the terminal, games can end in a draw, win, or loss. 
 
 ## Getting Started 
 
