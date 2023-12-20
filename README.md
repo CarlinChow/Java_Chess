@@ -13,3 +13,4 @@ and then follow the instructions in the terminal
 
 ## UML Class Diagram 
 
+![class diagram](https://raw.githubusercontent.com/CarlinChow/Java_Chess/blob/main/UMLClassDiagram.png)
